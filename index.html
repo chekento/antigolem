@@ -1,82 +1,84 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#090b12" />
   <meta name="description" content="AntiGolem — local-first semantic forensics and sentence-by-sentence language audit." />
   <title>AntiGolem — Semantic Forensics</title>
+  <link rel="icon" href="assets/brand/antigolem-logo.svg" type="image/svg+xml" />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="stylesheet" href="styles.css" />
+  <script src="locale-bootstrap.js"></script>
 </head>
 <body>
   <div class="noise"></div>
   <header class="topbar">
     <a class="brand" href="#top" aria-label="AntiGolem home">
-      <span class="brandMark" aria-hidden="true">AG</span>
+      <span class="brandMark" aria-hidden="true" style="overflow:hidden;padding:0"><img src="assets/brand/antigolem-logo.svg" alt="" style="width:100%;height:100%;display:block" /></span>
       <span><b>AntiGolem</b><small>Semantic Forensics</small></span>
     </a>
     <div class="topActions">
-      <label class="selectWrap"><span data-i18n="language">Sprache</span>
+      <label class="selectWrap"><span data-i18n="language">Language</span>
         <select id="languageSelect" aria-label="Language">
           <option value="de">Deutsch</option><option value="en">English</option><option value="fr">Français</option>
           <option value="es">Español</option><option value="it">Italiano</option><option value="nl">Nederlands</option>
         </select>
       </label>
-      <a class="button ghost" href="privacy.html" data-i18n="privacy">Datenschutz</a>
-      <a class="button primary" href="https://github.com/chekento/antigolem/releases/latest/download/AntiGolem.apk" data-i18n="apk">APK laden</a>
+      <a class="button ghost" href="privacy.html" data-i18n="privacy">Privacy</a>
+      <a class="button primary" href="https://github.com/chekento/antigolem/releases/latest/download/AntiGolem.apk" data-i18n="apk">Download APK</a>
     </div>
   </header>
 
   <main id="top">
     <section class="hero panel glow">
       <div class="eyebrow">FORENSIC LANGUAGE ARCHITECTURE // LOCAL-FIRST</div>
-      <h1 data-i18n="heroTitle">Jeden Satz sehen. Unschärfen sichtbar machen.</h1>
-      <p data-i18n="heroText">Volltext-Audit für Variablenbindung, Ghost-Context, destruktive und konstruktive Rahmung, Verantwortungsdiffusion und Zielgruppen-Resonanz.</p>
+      <h1 data-i18n="heroTitle">See every sentence. Expose structural ambiguity.</h1>
+      <p data-i18n="heroText">Full-text audit for variable binding, ghost context, destructive and constructive framing, responsibility diffusion and target-group resonance.</p>
       <div class="heroGrid">
-        <div><b>6</b><span data-i18n="languages">Sprachen</span></div>
-        <div><b>100%</b><span data-i18n="fullText">Volltext-Parsing</span></div>
+        <div><b>6</b><span data-i18n="languages">Languages</span></div>
+        <div><b>100%</b><span data-i18n="fullText">Full-text parsing</span></div>
         <div><b>D-0→D-2+</b><span>Binding audit</span></div>
-        <div><b>LOCAL</b><span data-i18n="processing">Verarbeitung</span></div>
+        <div><b>LOCAL</b><span data-i18n="processing">Processing</span></div>
       </div>
     </section>
 
     <section class="workspace">
       <article class="panel inputPanel">
         <div class="sectionHead">
-          <div><span class="step">01</span><h2 data-i18n="source">Quelltext</h2></div>
-          <span id="sentencePreview" class="pill">0 Sätze</span>
+          <div><span class="step">01</span><h2 data-i18n="source">Source text</h2></div>
+          <span id="sentencePreview" class="pill">0 sentences</span>
         </div>
-        <textarea id="sourceText" spellcheck="false" data-i18n-placeholder="placeholder" placeholder="Gesamten Text hier einfügen …"></textarea>
+        <textarea id="sourceText" spellcheck="false" data-i18n-placeholder="placeholder" placeholder="Paste the complete text here …"></textarea>
         <div class="toolRow">
-          <label class="button ghost fileButton"><input id="fileInput" type="file" accept=".txt,.md,.html,.htm,.csv,.json,text/plain,text/markdown,text/html" /><span data-i18n="file">Datei öffnen</span></label>
+          <label class="button ghost fileButton"><input id="fileInput" type="file" accept=".txt,.md,.html,.htm,.csv,.json,text/plain,text/markdown,text/html" /><span data-i18n="file">Open file</span></label>
           <button id="demoBtn" class="button ghost" type="button" data-i18n="demo">Demo</button>
-          <button id="clearBtn" class="button ghost" type="button" data-i18n="clear">Leeren</button>
-          <button id="analyzeBtn" class="button primary wide" type="button" data-i18n="analyze">Vollständig analysieren</button>
+          <button id="clearBtn" class="button ghost" type="button" data-i18n="clear">Clear</button>
+          <button id="analyzeBtn" class="button primary wide" type="button" data-i18n="analyze">Analyze complete text</button>
         </div>
-        <p class="micro" data-i18n="localNote">Analyse läuft lokal im Browser. Bei HTML-Dateien wird sichtbarer Text extrahiert.</p>
+        <p class="micro" data-i18n="localNote">Analysis runs locally in your browser. Visible text is extracted from HTML files.</p>
       </article>
 
       <article class="panel resultPanel">
         <div class="sectionHead">
           <div><span class="step">02</span><h2 data-i18n="audit">Audit</h2></div>
-          <span id="statusPill" class="pill idle" data-i18n="ready">Bereit</span>
+          <span id="statusPill" class="pill idle" data-i18n="ready">Ready</span>
         </div>
-        <div id="metricGrid" class="metrics emptyState"><p data-i18n="empty">Nach der Analyse erscheinen hier Volltext-Metriken.</p></div>
+        <div id="metricGrid" class="metrics emptyState"><p data-i18n="empty">Full-text metrics appear here after analysis.</p></div>
         <div id="reportActions" class="toolRow hidden">
-          <button id="copyBtn" class="button ghost" type="button" data-i18n="copy">Protokoll kopieren</button>
-          <button id="downloadBtn" class="button ghost" type="button" data-i18n="download">Markdown laden</button>
+          <button id="copyBtn" class="button ghost" type="button" data-i18n="copy">Copy protocol</button>
+          <button id="downloadBtn" class="button ghost" type="button" data-i18n="download">Download Markdown</button>
         </div>
         <pre id="report" class="report" aria-live="polite"></pre>
       </article>
     </section>
 
     <section class="panel methodology">
-      <div><span class="step">03</span><h2 data-i18n="method">Methodik & Grenzen</h2></div>
+      <div><span class="step">03</span><h2 data-i18n="method">Method &amp; limits</h2></div>
       <div class="methodGrid">
-        <p data-i18n="method1"><b>D-Faktor:</b> heuristische Schätzung der anaphorischen Distanz. D-0 gilt als lokal gebunden, D-1 als Vorgängersatz-Bezug, D-2+ als erhöhtes Ghost-Context-Risiko.</p>
-        <p data-i18n="method2"><b>Golem/Pygmalion:</b> rhetorische Framing-Tags. Sie sind keine Diagnose und kein Beweis einer neuronalen oder unbewussten „Programmierung“.</p>
-        <p data-i18n="method3"><b>Vollständigkeit:</b> Jeder erkannte Satz fließt in die Statistik ein. Die Detailsektion listet alle nicht-neutralen Sätze und konstruktiv bewerteten Sätze.</p>
+        <p data-i18n="method1"><b>D-factor:</b> heuristic estimate of anaphoric distance. D-0 is locally bound, D-1 points to the previous sentence, D-2+ indicates increased ghost-context risk.</p>
+        <p data-i18n="method2"><b>Golem/Pygmalion:</b> rhetorical framing tags. They are not a diagnosis or proof of neural or subconscious “programming”.</p>
+        <p data-i18n="method3"><b>Completeness:</b> Every detected sentence enters the statistics. The detail section lists every non-neutral and constructive sentence.</p>
       </div>
     </section>
   </main>
@@ -84,5 +86,7 @@
   <footer><span>AntiGolem · local-first semantic audit</span><a href="https://github.com/chekento/antigolem">GitHub</a></footer>
   <script src="app.js"></script>
   <script src="report-i18n.js"></script>
+  <script src="advanced-stats.js"></script>
+  <script src="local-ai.js"></script>
 </body>
 </html>
