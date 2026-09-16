@@ -1,0 +1,55 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'android/**'
+      - 'index.html'
+      - 'styles.css'
+      - 'app.js'
+      - 'manifest.webmanifest'
+      - '.github/workflows/android.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-apk
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Install Android SDK
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0' 'platform-tools'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Build installable test APK
+        run: gradle -p android clean :app:assembleDebug --stacktrace
+      - name: Prepare artifact
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk AntiGolem.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AntiGolem-APK
+          path: AntiGolem.apk
+          if-no-files-found: error
+      - name: Publish latest APK release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest -y --cleanup-tag || true
+          gh release create latest AntiGolem.apk \
+            --target "$GITHUB_SHA" \
+            --title 'AntiGolem — latest Android test APK' \
+            --notes 'Automated local-first AntiGolem test build. Debug-signed: uninstall an older CI build if Android reports a signature mismatch. Production distribution should use a private stable signing key.' \
+            --latest
