@@ -32,15 +32,21 @@ The labels **Golem effect**, **Pygmalion effect**, **mantra** and **psychologica
 
 Text analysis is local-first. The web app does not transmit pasted text to an AntiGolem backend. The Android overlay processes accessibility text on-device. See [`privacy.html`](./privacy.html) for details.
 
+## GitHub Pages — one-time repository switch
+
+The web app is already stored directly in the repository root and includes `.nojekyll`. If Pages has not yet been enabled for this new repository, open **Settings → Pages**, choose **Deploy from a branch**, select **main** and **/(root)**, then save. GitHub will serve the app at:
+
+`https://chekento.github.io/antigolem/`
+
 <details>
 <summary><strong>Repository / developer details</strong></summary>
 
 ### Structure
 
-- `index.html`, `styles.css`, `app.js` — GitHub Pages web app
+- `index.html`, `styles.css`, `app.js`, `report-i18n.js` — GitHub Pages web app
+- `privacy.html` — local-first/privacy and AccessibilityService disclosure
 - `android/` — native Android wrapper + accessibility overlay
-- `.github/workflows/pages.yml` — Pages deployment
-- `.github/workflows/android.yml` — APK build and `latest` release asset
+- `.github/workflows/android.yml` — verified APK build and `latest` release publishing
 
 ### Android build
 
