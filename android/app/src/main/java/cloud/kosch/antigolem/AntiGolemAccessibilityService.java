@@ -2,9 +2,15 @@ package cloud.kosch.antigolem;
 
 import android.accessibilityservice.AccessibilityService;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -29,6 +35,7 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
     private LinearLayout menuPanel;
     private ImageButton bubbleButton;
     private WindowManager.LayoutParams overlayParams;
+    private View selectionOverlay;
     private float downRawX;
     private float downRawY;
     private int downX;
@@ -58,7 +65,7 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
         menuPanel = buildMenuPanel();
         menuPanel.setVisibility(View.GONE);
         menuPanel.setAlpha(0f);
-        overlayRoot.addView(menuPanel, new LinearLayout.LayoutParams(dp(248), LinearLayout.LayoutParams.WRAP_CONTENT));
+        overlayRoot.addView(menuPanel, new LinearLayout.LayoutParams(dp(260), LinearLayout.LayoutParams.WRAP_CONTENT));
 
         View spacer = new View(this);
         overlayRoot.addView(spacer, new LinearLayout.LayoutParams(dp(8), dp(1)));
@@ -112,7 +119,7 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
         TextView subtitle = new TextView(this);
-        subtitle.setText("Analyze · import · write · local AI");
+        subtitle.setText("Select · analyze · import · write · local AI");
         subtitle.setTextColor(Color.rgb(153, 175, 204));
         subtitle.setTextSize(11.5f);
         subtitle.setPadding(dp(8), 0, dp(8), dp(8));
@@ -120,6 +127,7 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
+        panel.addView(menuButton("◯  Circle select & analyze", v -> startCircleSelection()));
         panel.addView(menuButton("◎  Analyze visible text", v -> {
             collapseMenu();
             captureCurrentWindow();
@@ -148,7 +156,7 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
         }));
 
         TextView hint = new TextView(this);
-        hint.setText("Drag the AntiGolem icon to move it. Tap it to minimize.");
+        hint.setText("Drag the AntiGolem icon to move it. Circle Select analyzes only accessible text inside the marked region.");
         hint.setTextColor(Color.rgb(110, 132, 160));
         hint.setTextSize(10.5f);
         hint.setPadding(dp(8), dp(7), dp(8), dp(2));
@@ -240,6 +248,72 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
         if (bubbleButton != null) bubbleButton.setContentDescription("Open AntiGolem Toolkit");
     }
 
+    private void startCircleSelection() {
+        collapseMenu();
+        if (windowManager == null || selectionOverlay != null) return;
+        if (overlayRoot != null) overlayRoot.setVisibility(View.GONE);
+
+        CircleSelectionView selector = new CircleSelectionView();
+        selectionOverlay = selector;
+        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
+                        WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+                PixelFormat.TRANSLUCENT);
+        params.gravity = Gravity.TOP | Gravity.START;
+        params.x = 0;
+        params.y = 0;
+        windowManager.addView(selector, params);
+        Toast.makeText(this,
+                "Draw an oval around the text you want AntiGolem to analyze. A tiny tap cancels.",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    private void finishCircleSelection(RectF region) {
+        RectF selected = new RectF(region);
+        removeSelectionOverlay();
+        if (overlayRoot != null) overlayRoot.setVisibility(View.VISIBLE);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> captureSelectedRegion(selected), 140);
+    }
+
+    private void cancelCircleSelection() {
+        removeSelectionOverlay();
+        if (overlayRoot != null) overlayRoot.setVisibility(View.VISIBLE);
+        Toast.makeText(this, "Circle Select cancelled.", Toast.LENGTH_SHORT).show();
+    }
+
+    private void removeSelectionOverlay() {
+        if (windowManager != null && selectionOverlay != null) {
+            try {
+                windowManager.removeView(selectionOverlay);
+            } catch (Exception ignored) {
+            }
+        }
+        selectionOverlay = null;
+    }
+
+    private void captureSelectedRegion(RectF region) {
+        AccessibilityNodeInfo root = findTargetRoot();
+        if (root == null) {
+            Toast.makeText(this, "No accessibility text is available in the selected app.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        LinkedHashSet<String> parts = new LinkedHashSet<>();
+        collectTextInRegion(root, parts, 0, region);
+        String captured = joinCaptured(parts, 60000);
+        if (captured.trim().isEmpty()) {
+            Toast.makeText(this,
+                    "No accessibility-visible text was found inside the circle. Image/canvas/PDF text may need OCR.",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        storeCapturedAndAnalyze(captured);
+    }
+
     private void captureCurrentWindow() {
         AccessibilityNodeInfo root = findTargetRoot();
         if (root == null) {
@@ -249,18 +323,7 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
 
         LinkedHashSet<String> parts = new LinkedHashSet<>();
         collectText(root, parts, 0);
-        StringBuilder full = new StringBuilder();
-        for (String part : parts) {
-            String clean = part == null ? "" : part.trim();
-            if (clean.isEmpty()) continue;
-            if (clean.equals("AntiGolem Toolkit") || clean.startsWith("Analyze · import") ||
-                    clean.contains("Open AntiGolem Toolkit")) continue;
-            if (full.length() > 0) full.append('\n');
-            full.append(clean);
-            if (full.length() >= 60000) break;
-        }
-
-        String captured = full.length() > 60000 ? full.substring(0, 60000) : full.toString();
+        String captured = joinCaptured(parts, 60000);
         if (captured.trim().isEmpty()) {
             Toast.makeText(this,
                     "This screen exposes no readable accessibility text. Image/canvas/PDF content may require OCR.",
@@ -268,12 +331,29 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
             return;
         }
 
+        storeCapturedAndAnalyze(captured);
+    }
+
+    private String joinCaptured(Set<String> parts, int maxChars) {
+        StringBuilder full = new StringBuilder();
+        for (String part : parts) {
+            String clean = part == null ? "" : part.trim();
+            if (clean.isEmpty()) continue;
+            if (clean.equals("AntiGolem Toolkit") || clean.startsWith("Select · analyze") ||
+                    clean.contains("Open AntiGolem Toolkit")) continue;
+            if (full.length() > 0) full.append('\n');
+            full.append(clean);
+            if (full.length() >= maxChars) break;
+        }
+        return full.length() > maxChars ? full.substring(0, maxChars) : full.toString();
+    }
+
+    private void storeCapturedAndAnalyze(String captured) {
         long now = System.currentTimeMillis();
         getSharedPreferences("antigolem", MODE_PRIVATE).edit()
                 .putString("captured_text", captured)
                 .putLong("captured_at", now)
                 .apply();
-
         launchMain(MainActivity.ACTION_ANALYZE_CAPTURE);
     }
 
@@ -307,15 +387,124 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
 
     private void collectText(AccessibilityNodeInfo node, Set<String> out, int depth) {
         if (node == null || depth > 90 || out.size() > 2500) return;
+        addNodeText(node, out);
+        for (int i = 0; i < node.getChildCount(); i++) {
+            AccessibilityNodeInfo child = node.getChild(i);
+            if (child != null) collectText(child, out, depth + 1);
+        }
+    }
+
+    private void collectTextInRegion(AccessibilityNodeInfo node, Set<String> out, int depth, RectF ellipse) {
+        if (node == null || depth > 90 || out.size() > 2500) return;
+        Rect bounds = new Rect();
+        node.getBoundsInScreen(bounds);
+        if (!bounds.isEmpty() && ellipseIntersectsRect(ellipse, bounds)) {
+            addNodeText(node, out);
+        }
+        for (int i = 0; i < node.getChildCount(); i++) {
+            AccessibilityNodeInfo child = node.getChild(i);
+            if (child != null) collectTextInRegion(child, out, depth + 1, ellipse);
+        }
+    }
+
+    private void addNodeText(AccessibilityNodeInfo node, Set<String> out) {
         CharSequence text = node.getText();
         CharSequence description = node.getContentDescription();
         CharSequence hint = node.getHintText();
         if (text != null) out.add(text.toString());
         if (description != null) out.add(description.toString());
         if (hint != null) out.add(hint.toString());
-        for (int i = 0; i < node.getChildCount(); i++) {
-            AccessibilityNodeInfo child = node.getChild(i);
-            if (child != null) collectText(child, out, depth + 1);
+    }
+
+    private boolean ellipseIntersectsRect(RectF ellipse, Rect rect) {
+        float rx = ellipse.width() / 2f;
+        float ry = ellipse.height() / 2f;
+        if (rx <= 1f || ry <= 1f) return false;
+        float cx = ellipse.centerX();
+        float cy = ellipse.centerY();
+        float nearestX = Math.max(rect.left, Math.min(cx, rect.right));
+        float nearestY = Math.max(rect.top, Math.min(cy, rect.bottom));
+        float dx = (nearestX - cx) / rx;
+        float dy = (nearestY - cy) / ry;
+        return dx * dx + dy * dy <= 1f;
+    }
+
+    private class CircleSelectionView extends View {
+        private final Paint ovalPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private final Paint fillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private final Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private float startX;
+        private float startY;
+        private float currentX;
+        private float currentY;
+        private boolean drawing;
+
+        CircleSelectionView() {
+            super(AntiGolemAccessibilityService.this);
+            setBackgroundColor(Color.TRANSPARENT);
+            ovalPaint.setStyle(Paint.Style.STROKE);
+            ovalPaint.setStrokeWidth(dp(4));
+            ovalPaint.setColor(Color.rgb(33, 217, 198));
+            fillPaint.setStyle(Paint.Style.FILL);
+            fillPaint.setColor(Color.argb(45, 33, 217, 198));
+            textPaint.setColor(Color.WHITE);
+            textPaint.setTextSize(dp(16));
+            textPaint.setFakeBoldText(true);
+        }
+
+        @Override
+        protected void onDraw(Canvas canvas) {
+            super.onDraw(canvas);
+            canvas.drawColor(Color.argb(70, 0, 0, 0));
+            canvas.drawText("Circle the text to analyze", dp(22), dp(48), textPaint);
+            if (drawing) {
+                RectF region = normalizedRegion();
+                canvas.drawOval(region, fillPaint);
+                canvas.drawOval(region, ovalPaint);
+            }
+        }
+
+        @Override
+        public boolean onTouchEvent(MotionEvent event) {
+            switch (event.getActionMasked()) {
+                case MotionEvent.ACTION_DOWN:
+                    startX = currentX = event.getX();
+                    startY = currentY = event.getY();
+                    drawing = true;
+                    invalidate();
+                    return true;
+                case MotionEvent.ACTION_MOVE:
+                    currentX = event.getX();
+                    currentY = event.getY();
+                    invalidate();
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    currentX = event.getX();
+                    currentY = event.getY();
+                    RectF region = normalizedRegion();
+                    drawing = false;
+                    invalidate();
+                    if (region.width() < dp(40) || region.height() < dp(40)) {
+                        cancelCircleSelection();
+                    } else {
+                        finishCircleSelection(region);
+                    }
+                    return true;
+                case MotionEvent.ACTION_CANCEL:
+                    drawing = false;
+                    cancelCircleSelection();
+                    return true;
+                default:
+                    return true;
+            }
+        }
+
+        private RectF normalizedRegion() {
+            return new RectF(
+                    Math.min(startX, currentX),
+                    Math.min(startY, currentY),
+                    Math.max(startX, currentX),
+                    Math.max(startY, currentY));
         }
     }
 
@@ -335,6 +524,7 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
 
     @Override
     public void onDestroy() {
+        removeSelectionOverlay();
         if (windowManager != null && overlayRoot != null) {
             try {
                 windowManager.removeView(overlayRoot);
