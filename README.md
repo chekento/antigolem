@@ -38,11 +38,28 @@ AntiGolem performs a **sentence-by-sentence full-text audit**. The deterministic
 
 ---
 
+## Android 1.2 — Floating Toolkit
+
 <a href="https://github.com/chekento/antigolem/releases/latest/download/AntiGolem.apk">
   <img src="https://img.shields.io/badge/%E2%AC%87%20GET%20ANTIGOLEM%20FOR%20ANDROID-LATEST%20APK-00d8b3?style=for-the-badge&labelColor=07111f" alt="Download latest AntiGolem APK" />
 </a>
 
-**Android mode:** activate the AntiGolem Accessibility Service explicitly, then use the floating AntiGolem control to capture text exposed by the currently active Android accessibility tree and analyze it locally. Images, canvas-rendered text, video, protected surfaces, and some PDF viewers may require a future OCR/screen-capture path.
+After the user explicitly enables the **AntiGolem Screen Text Analyzer** accessibility service, a floating AntiGolem icon remains available over the Android launcher and normal apps. Tap it to open an Air-Command/XRecorder-style toolkit.
+
+**Toolkit actions:**
+
+- **Analyze visible text** — reads text/content descriptions exposed by the active app's accessibility tree and sends them into AntiGolem for full analysis.
+- **Open text file** — opens Android's system document picker and imports text locally.
+- **Write / paste text** — opens the main editor and focuses the text input.
+- **Open AntiGolem** — opens the complete analyzer.
+- **Local AI** — opens the local-model information/control page.
+- **Toolkit settings** — opens Android Accessibility settings.
+
+The floating icon can be dragged around the screen and tapped again to minimize the menu. Capture occurs only after an explicit toolkit action; there is no background text harvesting.
+
+Text files can also be selected from the web-style **Open file** control inside the APK. Android WebView now implements the native file chooser path instead of silently cancelling file requests.
+
+Images, canvas-rendered text, video, protected surfaces and some PDF viewers may still require a future OCR/screen-capture path because they often expose no readable accessibility text.
 
 The APK uses the same **shield + speech bubble + tangled-to-clear text** AntiGolem icon as the repository branding.
 
@@ -85,7 +102,7 @@ The rule-based audit is local-first and does not require an AntiGolem backend. W
 - `report-i18n.js` — localized audit protocol text
 - `assets/brand/` — AntiGolem visual identity
 - `assets/marketing/` — repository/app marketing artwork
-- `android/` — Android wrapper + Accessibility overlay
+- `android/` — Android wrapper + floating Accessibility toolkit
 - `.github/workflows/android.yml` — automated APK build and latest release
 
 ### Android package
