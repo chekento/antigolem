@@ -9,8 +9,12 @@ on:
       - 'styles.css'
       - 'app.js'
       - 'report-i18n.js'
+      - 'locale-bootstrap.js'
+      - 'advanced-stats.js'
+      - 'local-ai.js'
       - 'manifest.webmanifest'
       - 'privacy.html'
+      - 'assets/brand/**'
       - '.github/workflows/android.yml'
   workflow_dispatch:
 
@@ -56,5 +60,5 @@ jobs:
           gh release create latest AntiGolem.apk \
             --target "$GITHUB_SHA" \
             --title 'AntiGolem — latest Android test APK' \
-            --notes 'Automated local-first AntiGolem test build. Debug-signed: uninstall an older CI build if Android reports a signature mismatch. Production distribution should use a private stable signing key.' \
+            --notes 'AntiGolem 1.1 test build: new shield/speech app icon, browser-language auto-detection, extended statistics, and API-free local-AI cross-check with browser LanguageModel/WebLLM fallback. Debug-signed; production distribution should use a private stable signing key.' \
             --latest
