@@ -1,0 +1,10 @@
+{
+  "name": "AntiGolem — Semantic Forensics",
+  "short_name": "AntiGolem",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#070910",
+  "theme_color": "#090b12",
+  "description": "Local-first complete-text semantic forensics and language audit.",
+  "icons": []
+}
