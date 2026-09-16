@@ -6,6 +6,11 @@ on:
     paths:
       - 'android/**'
       - 'index.html'
+      - 'about.html'
+      - 'methodology.html'
+      - 'local-ai.html'
+      - 'privacy.html'
+      - '404.html'
       - 'styles.css'
       - 'app.js'
       - 'report-i18n.js'
@@ -13,7 +18,6 @@ on:
       - 'advanced-stats.js'
       - 'local-ai.js'
       - 'manifest.webmanifest'
-      - 'privacy.html'
       - 'assets/brand/**'
       - '.github/workflows/android.yml'
   workflow_dispatch:
@@ -63,10 +67,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          NOTES='AntiGolem 1.1 test build: new shield/speech app icon, browser-language auto-detection, extended statistics, and API-free local-AI cross-check with browser LanguageModel/WebLLM fallback. Debug-signed; production distribution should use a private stable signing key.'
+          NOTES='AntiGolem 1.2 test build: floating launcher/app toolkit with expandable Air-Command-style menu, analyze-visible-text action, native text-file import, write/paste shortcut, main app and Local AI shortcuts, shield/speech icon, browser-language auto-detection, extended statistics, and API-free local-AI cross-check. Debug-signed; production distribution should use a private stable signing key.'
           if gh release view latest >/dev/null 2>&1; then
             gh release upload latest AntiGolem.apk --clobber
-            gh release edit latest --target "$GITHUB_SHA" --title 'AntiGolem — latest Android test APK' --notes "$NOTES" --latest
+            gh release edit latest --target "$GITHUB_SHA" --title 'AntiGolem 1.2 — Floating Toolkit APK' --notes "$NOTES" --latest
           else
-            gh release create latest AntiGolem.apk --target "$GITHUB_SHA" --title 'AntiGolem — latest Android test APK' --notes "$NOTES" --latest
+            gh release create latest AntiGolem.apk --target "$GITHUB_SHA" --title 'AntiGolem 1.2 — Floating Toolkit APK' --notes "$NOTES" --latest
           fi
