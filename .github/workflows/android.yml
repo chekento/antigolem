@@ -63,9 +63,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release delete latest -y --cleanup-tag || true
-          gh release create latest AntiGolem.apk \
-            --target "$GITHUB_SHA" \
-            --title 'AntiGolem — latest Android test APK' \
-            --notes 'AntiGolem 1.1 test build: new shield/speech app icon, browser-language auto-detection, extended statistics, and API-free local-AI cross-check with browser LanguageModel/WebLLM fallback. Debug-signed; production distribution should use a private stable signing key.' \
-            --latest
+          NOTES='AntiGolem 1.1 test build: new shield/speech app icon, browser-language auto-detection, extended statistics, and API-free local-AI cross-check with browser LanguageModel/WebLLM fallback. Debug-signed; production distribution should use a private stable signing key.'
+          if gh release view latest >/dev/null 2>&1; then
+            gh release upload latest AntiGolem.apk --clobber
+            gh release edit latest --target "$GITHUB_SHA" --title 'AntiGolem — latest Android test APK' --notes "$NOTES" --latest
+          else
+            gh release create latest AntiGolem.apk --target "$GITHUB_SHA" --title 'AntiGolem — latest Android test APK' --notes "$NOTES" --latest
+          fi
