@@ -11,10 +11,10 @@
 </p>
 
 <p align="center">
-  <a href="https://chekento.github.io/antigolem/about/">About</a> ·
-  <a href="https://chekento.github.io/antigolem/methodology/">Methodology</a> ·
-  <a href="https://chekento.github.io/antigolem/local-ai/">Local AI</a> ·
-  <a href="https://chekento.github.io/antigolem/privacy/">Privacy</a>
+  <a href="https://chekento.github.io/antigolem/about.html">About</a> ·
+  <a href="https://chekento.github.io/antigolem/methodology.html">Methodology</a> ·
+  <a href="https://chekento.github.io/antigolem/local-ai.html">Local AI</a> ·
+  <a href="https://chekento.github.io/antigolem/privacy.html">Privacy</a>
 </p>
 
 <p align="center">
@@ -38,7 +38,7 @@ AntiGolem performs a **sentence-by-sentence full-text audit**. The deterministic
 
 ---
 
-## Android 1.2 — Floating Toolkit
+## Android 1.3 — Floating Toolkit + Circle Select
 
 <a href="https://github.com/chekento/antigolem/releases/latest/download/AntiGolem.apk">
   <img src="https://img.shields.io/badge/%E2%AC%87%20GET%20ANTIGOLEM%20FOR%20ANDROID-LATEST%20APK-00d8b3?style=for-the-badge&labelColor=07111f" alt="Download latest AntiGolem APK" />
@@ -48,7 +48,8 @@ After the user explicitly enables the **AntiGolem Screen Text Analyzer** accessi
 
 **Toolkit actions:**
 
-- **Analyze visible text** — reads text/content descriptions exposed by the active app's accessibility tree and sends them into AntiGolem for full analysis.
+- **Circle Select & analyze** — temporarily opens a transparent full-screen selection layer. Draw an oval around the content you want checked; AntiGolem collects only accessibility-visible text whose screen bounds intersect that oval and analyzes that selection.
+- **Analyze visible text** — analyzes the accessibility-visible text from the whole active app window.
 - **Open text file** — opens Android's system document picker and imports text locally.
 - **Write / paste text** — opens the main editor and focuses the text input.
 - **Open AntiGolem** — opens the complete analyzer.
@@ -57,9 +58,9 @@ After the user explicitly enables the **AntiGolem Screen Text Analyzer** accessi
 
 The floating icon can be dragged around the screen and tapped again to minimize the menu. Capture occurs only after an explicit toolkit action; there is no background text harvesting.
 
-Text files can also be selected from the web-style **Open file** control inside the APK. Android WebView now implements the native file chooser path instead of silently cancelling file requests.
+**Circle Select is API-free and does not take a screenshot.** It uses Android accessibility node bounds to decide which text belongs to the marked region. This means ordinary app/UI text works well, while image-only text, canvas-rendered text, video, protected surfaces and some PDF viewers may still require a future local OCR/screen-capture path.
 
-Images, canvas-rendered text, video, protected surfaces and some PDF viewers may still require a future OCR/screen-capture path because they often expose no readable accessibility text.
+Text files can also be selected from the web-style **Open file** control inside the APK. Android WebView implements the native file chooser path instead of silently cancelling file requests.
 
 The APK uses the same **shield + speech bubble + tangled-to-clear text** AntiGolem icon as the repository branding.
 
@@ -85,7 +86,7 @@ The GitHub Pages app detects the visitor’s browser languages on first use. If 
 
 The rule-based audit is local-first and does not require an AntiGolem backend. When a browser-provided local language model is available, AntiGolem can use it directly. On compatible WebGPU devices, users may optionally load a small open local model; this requires downloading runtime/model files, but the analyzed text is not sent to a paid inference API by AntiGolem.
 
-[About](https://chekento.github.io/antigolem/about/) · [Methodology](https://chekento.github.io/antigolem/methodology/) · [Local AI](https://chekento.github.io/antigolem/local-ai/) · [Privacy](https://chekento.github.io/antigolem/privacy/) · [Live app](https://chekento.github.io/antigolem/) · [Latest APK](https://github.com/chekento/antigolem/releases/latest/download/AntiGolem.apk)
+[About](https://chekento.github.io/antigolem/about.html) · [Methodology](https://chekento.github.io/antigolem/methodology.html) · [Local AI](https://chekento.github.io/antigolem/local-ai.html) · [Privacy](https://chekento.github.io/antigolem/privacy.html) · [Live app](https://chekento.github.io/antigolem/) · [Latest APK](https://github.com/chekento/antigolem/releases/latest/download/AntiGolem.apk)
 
 <details>
 <summary><strong>Repository / developer / build details</strong></summary>
@@ -93,8 +94,8 @@ The rule-based audit is local-first and does not require an AntiGolem backend. W
 ### Project structure
 
 - `index.html`, `styles.css`, `app.js` — core GitHub Pages app
-- `about.html`, `methodology.html`, `local-ai.html`, `privacy.html` — static subpages
-- `about/`, `methodology/`, `local-ai/`, `privacy/` — clean URL routes
+- `about.html`, `methodology.html`, `local-ai.html`, `privacy.html` — canonical static subpages
+- `about/`, `methodology/`, `local-ai/`, `privacy/` — clean URL redirect aliases
 - `404.html` — route recovery / friendly fallback
 - `locale-bootstrap.js` — browser-language detection and English fallback
 - `advanced-stats.js` — extended local heuristic metrics
@@ -124,6 +125,8 @@ Every relevant Android change triggers the GitHub Actions APK workflow. The curr
 The site is static and lives in the repository root. Configure GitHub Pages once with:
 
 `Settings → Pages → Deploy from a branch → main → /(root)`
+
+Canonical subpage URLs use direct `.html` files to avoid route ambiguity on GitHub Pages. Clean directory URLs remain as redirect aliases.
 
 ### Local LLM strategy
 
