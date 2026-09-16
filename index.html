@@ -25,6 +25,9 @@
           <option value="es">Español</option><option value="it">Italiano</option><option value="nl">Nederlands</option>
         </select>
       </label>
+      <a class="button ghost" href="about.html">About</a>
+      <a class="button ghost" href="methodology.html">Methodology</a>
+      <a class="button ghost" href="local-ai.html">Local AI</a>
       <a class="button ghost" href="privacy.html" data-i18n="privacy">Privacy</a>
       <a class="button primary" href="https://github.com/chekento/antigolem/releases/latest/download/AntiGolem.apk" data-i18n="apk">Download APK</a>
     </div>
@@ -45,10 +48,7 @@
 
     <section class="workspace">
       <article class="panel inputPanel">
-        <div class="sectionHead">
-          <div><span class="step">01</span><h2 data-i18n="source">Source text</h2></div>
-          <span id="sentencePreview" class="pill">0 sentences</span>
-        </div>
+        <div class="sectionHead"><div><span class="step">01</span><h2 data-i18n="source">Source text</h2></div><span id="sentencePreview" class="pill">0 sentences</span></div>
         <textarea id="sourceText" spellcheck="false" data-i18n-placeholder="placeholder" placeholder="Paste the complete text here …"></textarea>
         <div class="toolRow">
           <label class="button ghost fileButton"><input id="fileInput" type="file" accept=".txt,.md,.html,.htm,.csv,.json,text/plain,text/markdown,text/html" /><span data-i18n="file">Open file</span></label>
@@ -60,15 +60,9 @@
       </article>
 
       <article class="panel resultPanel">
-        <div class="sectionHead">
-          <div><span class="step">02</span><h2 data-i18n="audit">Audit</h2></div>
-          <span id="statusPill" class="pill idle" data-i18n="ready">Ready</span>
-        </div>
+        <div class="sectionHead"><div><span class="step">02</span><h2 data-i18n="audit">Audit</h2></div><span id="statusPill" class="pill idle" data-i18n="ready">Ready</span></div>
         <div id="metricGrid" class="metrics emptyState"><p data-i18n="empty">Full-text metrics appear here after analysis.</p></div>
-        <div id="reportActions" class="toolRow hidden">
-          <button id="copyBtn" class="button ghost" type="button" data-i18n="copy">Copy protocol</button>
-          <button id="downloadBtn" class="button ghost" type="button" data-i18n="download">Download Markdown</button>
-        </div>
+        <div id="reportActions" class="toolRow hidden"><button id="copyBtn" class="button ghost" type="button" data-i18n="copy">Copy protocol</button><button id="downloadBtn" class="button ghost" type="button" data-i18n="download">Download Markdown</button></div>
         <pre id="report" class="report" aria-live="polite"></pre>
       </article>
     </section>
@@ -83,7 +77,7 @@
     </section>
   </main>
 
-  <footer><span>AntiGolem · local-first semantic audit</span><a href="https://github.com/chekento/antigolem">GitHub</a></footer>
+  <footer><span>AntiGolem · local-first semantic audit</span><span><a href="about.html">About</a> · <a href="methodology.html">Methodology</a> · <a href="local-ai.html">Local AI</a> · <a href="privacy.html">Privacy</a> · <a href="https://github.com/chekento/antigolem">GitHub</a></span></footer>
   <script src="app.js"></script>
   <script src="report-i18n.js"></script>
   <script src="advanced-stats.js"></script>
