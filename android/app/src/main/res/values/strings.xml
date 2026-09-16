@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">AntiGolem</string>
-    <string name="accessibility_description">AntiGolem can read text and content descriptions exposed by the currently active Android accessibility tree only after you enable this service. Capture is initiated with the visible floating AG button and analyzed locally in AntiGolem. Images, video, canvas text and some PDF viewers may not expose readable text.</string>
+    <string name="accessibility_description">AntiGolem provides a visible floating toolkit over the Android launcher and apps after you explicitly enable this service. The toolkit can analyze accessibility-visible text, open text files, start manual text analysis, open Local AI information and launch AntiGolem. Screen text is captured only after you tap Analyze visible text; there is no background harvesting. Images, video, canvas text and some PDF viewers may not expose readable text.</string>
 </resources>
