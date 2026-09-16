@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">AntiGolem</string>
-    <string name="accessibility_description">AntiGolem provides a visible floating toolkit over the Android launcher and apps after you explicitly enable this service. The toolkit can analyze accessibility-visible text, open text files, start manual text analysis, open Local AI information and launch AntiGolem. Screen text is captured only after you tap Analyze visible text; there is no background harvesting. Images, video, canvas text and some PDF viewers may not expose readable text.</string>
+    <string name="accessibility_description">AntiGolem provides a visible floating toolkit over the Android launcher and apps after you explicitly enable this service. It can analyze accessibility-visible text from the active app, including Circle Select: draw an oval around a screen region and AntiGolem analyzes only text whose accessibility bounds intersect that region. The toolkit can also analyze the visible screen, open text files, start manual text analysis, open Local AI information and launch AntiGolem. Capture runs only after an explicit toolkit action; there is no background harvesting. Images, video, canvas text and some PDF viewers may not expose readable text and may require a future OCR path.</string>
 </resources>
