@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="780" viewBox="0 0 1600 780" role="img" aria-labelledby="t d">
+<title id="t">AntiGolem app hero</title><desc id="d">App-style hero for AntiGolem with local analysis dashboard and Android download.</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#050a16"/><stop offset=".55" stop-color="#081932"/><stop offset="1" stop-color="#10102a"/></linearGradient>
+ <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6f5cff"/><stop offset=".45" stop-color="#23a8ff"/><stop offset="1" stop-color="#21e6c8"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="1600" height="780" rx="42" fill="url(#bg)"/>
+<circle cx="1450" cy="90" r="300" fill="#2d42ff" opacity=".08"/><circle cx="620" cy="810" r="420" fill="#19e5d1" opacity=".06"/>
+<g transform="translate(74 64)">
+ <rect width="162" height="162" rx="42" fill="#091325" stroke="#284b8f" stroke-width="3"/>
+ <path d="M81 21 137 47v40c0 34-24 54-56 66-32-12-56-32-56-66V47Z" fill="#071522" stroke="url(#g)" stroke-width="8"/>
+ <path d="M43 60h77a12 12 0 0 1 12 12v38a12 12 0 0 1-12 12H76l-21 17 5-17H43a12 12 0 0 1-12-12V72a12 12 0 0 1 12-12Z" fill="#0d1830" stroke="#53d9ff" stroke-width="3"/>
+ <path d="M42 88c8-21 31-22 31 1 0 18-20 23-27 8-6-16 16-31 31-18 12 10 4 32-12 32-18 1-25-23-9-31 18-10 31 12 47 12" fill="none" stroke="url(#g)" stroke-width="4" stroke-linecap="round"/>
+ <path d="M100 82h19M96 94h23M103 106h16" fill="none" stroke="#4fe5da" stroke-width="4" stroke-linecap="round"/>
+ </g>
+<text x="270" y="130" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="76" font-weight="800" fill="#f7fbff">Anti<tspan fill="#42d5ff">Golem</tspan></text>
+<text x="270" y="181" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="27" fill="#afc4e6">Semantic Forensics &amp; Language Audit</text>
+<text x="74" y="298" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="25" letter-spacing="5" fill="#58dfff">LOCAL · PRIVATE · API-FREE · HUMAN-CENTRIC</text>
+<g font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" font-weight="650">
+ <g transform="translate(74 342)"><rect width="185" height="74" rx="18" fill="#0c1a31" stroke="#315899"/><text x="24" y="33" fill="#fff">🔒 API-free</text><text x="24" y="57" font-size="15" fill="#8ea9cf">No backend required</text></g>
+ <g transform="translate(276 342)"><rect width="185" height="74" rx="18" fill="#0c1a31" stroke="#315899"/><text x="24" y="33" fill="#fff">⚙ local-first</text><text x="24" y="57" font-size="15" fill="#8ea9cf">Private by design</text></g>
+ <g transform="translate(478 342)"><rect width="216" height="74" rx="18" fill="#0c1a31" stroke="#315899"/><text x="24" y="33" fill="#fff">🧠 free LLM-ready</text><text x="24" y="57" font-size="15" fill="#8ea9cf">Local model layer</text></g>
+</g>
+<g transform="translate(740 78)">
+ <rect width="780" height="575" rx="34" fill="#07111f" stroke="#315ca7" stroke-width="3"/>
+ <rect x="26" y="24" width="728" height="72" rx="18" fill="#0d1d36"/>
+ <text x="50" y="52" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18" fill="#71e9dc">● Local mode</text>
+ <text x="50" y="82" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="29" font-weight="750" fill="#fff">Full-text semantic audit</text>
+ <rect x="26" y="116" width="728" height="118" rx="18" fill="#0b1830" stroke="#23477d"/>
+ <text x="49" y="151" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18" fill="#7795c1">Paste or capture complete text…</text>
+ <rect x="530" y="169" width="190" height="46" rx="15" fill="url(#g)" filter="url(#glow)"/>
+ <text x="625" y="199" text-anchor="middle" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="20" font-weight="700" fill="#04101b">Analyze →</text>
+ <g transform="translate(26 255)" font-family="Inter,Segoe UI,Arial,sans-serif">
+  <rect width="348" height="135" rx="18" fill="#0b1830" stroke="#23477d"/>
+  <text x="22" y="31" font-size="17" fill="#9cb6dc">Category distribution</text>
+  <rect x="26" y="76" width="60" height="35" rx="7" fill="#ff5e74"/><rect x="101" y="55" width="60" height="56" rx="7" fill="#ffbf4d"/><rect x="176" y="86" width="60" height="25" rx="7" fill="#7890b3"/><rect x="251" y="67" width="60" height="44" rx="7" fill="#40d888"/>
+  <text x="56" y="126" text-anchor="middle" font-size="11" fill="#ff93a1">BAD</text><text x="131" y="126" text-anchor="middle" font-size="11" fill="#ffd47b">AMB.</text><text x="206" y="126" text-anchor="middle" font-size="11" fill="#a7b7cc">NEUTRAL</text><text x="281" y="126" text-anchor="middle" font-size="11" fill="#7cf0ad">GOOD</text>
+  <rect x="380" width="348" height="135" rx="18" fill="#0b1830" stroke="#23477d"/>
+  <text x="402" y="31" font-size="17" fill="#9cb6dc">D-factor</text>
+  <text x="408" y="72" font-size="36" font-weight="800" fill="#6de6dc">D-1</text><text x="486" y="72" font-size="18" fill="#d4e2f7">context-linked</text>
+  <text x="408" y="105" font-size="14" fill="#829bc2">D-0 31% · D-1 46% · D-2+ 23%</text>
+ </g>
+ <g transform="translate(26 411)" font-family="Inter,Segoe UI,Arial,sans-serif">
+  <rect width="728" height="138" rx="18" fill="#0b1830" stroke="#23477d"/>
+  <text x="22" y="31" font-size="17" fill="#9cb6dc">Extended statistics</text>
+  <text x="22" y="66" font-size="15" fill="#ff7d91">● harmful framing</text><text x="218" y="66" font-size="15" fill="#ffd078">● responsibility diffusion</text><text x="473" y="66" font-size="15" fill="#63e5d7">● clarity recovery</text>
+  <text x="22" y="100" font-size="15" fill="#85a5d1">pronoun binding · modal pressure · absolutism · blame · agency · repairability</text>
+  <text x="22" y="125" font-size="15" fill="#85a5d1">target-group resonance · sentence risk · discourse balance · constructive rewrite potential</text>
+ </g>
+</g>
+<g transform="translate(74 478)" font-family="Inter,Segoe UI,Arial,sans-serif">
+ <rect width="620" height="110" rx="26" fill="#0b1b30" stroke="#2b9fc3" stroke-width="2"/>
+ <text x="34" y="40" font-size="22" fill="#a8c3e8">Android overlay analyzer</text><text x="34" y="73" font-size="28" font-weight="800" fill="#fff">Download AntiGolem.apk</text>
+ <text x="560" y="70" font-size="39" fill="#54e3d8">↓</text>
+</g>
+<text x="74" y="724" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" fill="#8fa8ce">DE · EN · FR · ES · IT · NL  · browser language auto-detect · English fallback</text>
+</svg>
