@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AntiGolem</string>
+    <string name="accessibility_description">AntiGolem can read text and content descriptions exposed by the currently active Android accessibility tree only after you enable this service. Capture is initiated with the visible floating AG button and analyzed locally in AntiGolem. Images, video, canvas text and some PDF viewers may not expose readable text.</string>
+</resources>
