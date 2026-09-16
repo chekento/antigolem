@@ -11,6 +11,13 @@
 </p>
 
 <p align="center">
+  <a href="https://chekento.github.io/antigolem/about/">About</a> ·
+  <a href="https://chekento.github.io/antigolem/methodology/">Methodology</a> ·
+  <a href="https://chekento.github.io/antigolem/local-ai/">Local AI</a> ·
+  <a href="https://chekento.github.io/antigolem/privacy/">Privacy</a>
+</p>
+
+<p align="center">
   <img src="assets/marketing/hero.svg" width="100%" alt="AntiGolem app overview" />
 </p>
 
@@ -37,7 +44,7 @@ AntiGolem performs a **sentence-by-sentence full-text audit**. The deterministic
 
 **Android mode:** activate the AntiGolem Accessibility Service explicitly, then use the floating AntiGolem control to capture text exposed by the currently active Android accessibility tree and analyze it locally. Images, canvas-rendered text, video, protected surfaces, and some PDF viewers may require a future OCR/screen-capture path.
 
-The APK now uses the same **shield + speech bubble + tangled-to-clear text** AntiGolem icon as the repository branding.
+The APK uses the same **shield + speech bubble + tangled-to-clear text** AntiGolem icon as the repository branding.
 
 ---
 
@@ -61,7 +68,7 @@ The GitHub Pages app detects the visitor’s browser languages on first use. If 
 
 The rule-based audit is local-first and does not require an AntiGolem backend. When a browser-provided local language model is available, AntiGolem can use it directly. On compatible WebGPU devices, users may optionally load a small open local model; this requires downloading runtime/model files, but the analyzed text is not sent to a paid inference API by AntiGolem.
 
-[Privacy page](./privacy.html) · [Live app](https://chekento.github.io/antigolem/) · [Latest APK](https://github.com/chekento/antigolem/releases/latest/download/AntiGolem.apk)
+[About](https://chekento.github.io/antigolem/about/) · [Methodology](https://chekento.github.io/antigolem/methodology/) · [Local AI](https://chekento.github.io/antigolem/local-ai/) · [Privacy](https://chekento.github.io/antigolem/privacy/) · [Live app](https://chekento.github.io/antigolem/) · [Latest APK](https://github.com/chekento/antigolem/releases/latest/download/AntiGolem.apk)
 
 <details>
 <summary><strong>Repository / developer / build details</strong></summary>
@@ -69,6 +76,9 @@ The rule-based audit is local-first and does not require an AntiGolem backend. W
 ### Project structure
 
 - `index.html`, `styles.css`, `app.js` — core GitHub Pages app
+- `about.html`, `methodology.html`, `local-ai.html`, `privacy.html` — static subpages
+- `about/`, `methodology/`, `local-ai/`, `privacy/` — clean URL routes
+- `404.html` — route recovery / friendly fallback
 - `locale-bootstrap.js` — browser-language detection and English fallback
 - `advanced-stats.js` — extended local heuristic metrics
 - `local-ai.js` — API-free local LLM cross-check layer
