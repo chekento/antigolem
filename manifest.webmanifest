@@ -6,5 +6,12 @@
   "background_color": "#070910",
   "theme_color": "#090b12",
   "description": "Local-first complete-text semantic forensics and language audit.",
-  "icons": []
+  "icons": [
+    {
+      "src": "assets/brand/antigolem-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }
