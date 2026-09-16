@@ -1,67 +1,111 @@
-# AntiGolem — Semantic Forensics & Language Audit
+<p align="center">
+  <img src="assets/brand/antigolem-logo.svg" width="132" alt="AntiGolem icon" />
+</p>
 
-> **Local-first forensic language analysis for Web + Android.** AntiGolem parses the complete supplied text sentence-by-sentence and audits structural ambiguity, anaphoric distance (D-0 / D-1 / D-2+), destructive/constructive framing, responsibility diffusion and target-group resonance.
+<h1 align="center">AntiGolem</h1>
+<p align="center"><b>Semantic Forensics & Language Audit</b><br/>Clearer texts. Stronger agency. Local-first analysis.</p>
 
-[![Live Web App](https://img.shields.io/badge/LIVE-GitHub%20Pages-00d4aa?style=for-the-badge)](https://chekento.github.io/antigolem/)
-[![Download Android APK](https://img.shields.io/badge/ANDROID-Download%20APK-6f5cff?style=for-the-badge&logo=android)](https://github.com/chekento/antigolem/releases/latest/download/AntiGolem.apk)
-[![Android CI](https://github.com/chekento/antigolem/actions/workflows/android.yml/badge.svg)](https://github.com/chekento/antigolem/actions/workflows/android.yml)
+<p align="center">
+  <a href="https://chekento.github.io/antigolem/"><img alt="Open Live App" src="https://img.shields.io/badge/OPEN-LIVE%20APP-21d9c6?style=for-the-badge&logo=githubpages&logoColor=001018"></a>
+  <a href="https://github.com/chekento/antigolem/releases/latest/download/AntiGolem.apk"><img alt="Download AntiGolem APK" src="https://img.shields.io/badge/ANDROID-DOWNLOAD%20APK-6f5cff?style=for-the-badge&logo=android&logoColor=white"></a>
+</p>
 
-## What it does
+<p align="center">
+  <img src="assets/marketing/hero.svg" width="100%" alt="AntiGolem app overview" />
+</p>
 
-- Parses the **entire supplied text** instead of sampling excerpts.
-- Produces complete sentence counts and percentages for **BAD / AMBIVALENT / GOOD / NEUTRAL**.
-- Estimates **D-0 / D-1 / D-2+** anaphoric binding risk.
-- Detects heuristic **Golem-like** destructive framing and **Pygmalion-like** constructive framing.
-- Flags generic **“man” / “we”** responsibility diffusion or over-inclusive wording.
-- Generates target-group resonance, mechanism notes and constructive rewrites.
-- Works in **German, English, French, Spanish, Italian and Dutch**.
-- Exports the complete audit as Markdown.
-- Runs locally in the browser with no account and no mandatory API.
+## Analyze the whole text — not a few examples
 
-## Android overlay mode
+AntiGolem performs a **sentence-by-sentence full-text audit**. The deterministic engine always works without an API key, account, or inference server. It combines structural language analysis with an optional local LLM cross-check.
 
-The Android app contains an `AccessibilityService` used only after explicit user activation. A visible floating AntiGolem button can collect text exposed by the **currently active Android accessibility tree**, open AntiGolem and analyze it locally.
+| Core audit | Extended statistics | Local AI |
+|---|---|---|
+| BAD / AMBIVALENT / GOOD / NEUTRAL | word count & sentence length | Browser `LanguageModel` / Prompt API when available |
+| D-0 / D-1 / D-2+ binding | lexical diversity | optional Qwen2.5-0.5B via WebLLM/WebGPU |
+| ghost-context heuristics | absolutism & modal pressure | model runs locally after model/runtime download |
+| Golem/Pygmalion framing tags | blame cues & question/exclamation rate | no paid inference API |
+| responsibility diffusion / over-inclusive “we” | critical/high risk count | deterministic engine remains the fallback |
+| target-group resonance + rewrites | constructive share + heuristic clarity index | local AI is a second opinion, not a diagnosis |
 
-**Important limitation:** Android apps do not always expose underlying text through accessibility. Text drawn into images, video, canvas surfaces, some PDF viewers and protected apps may therefore not be readable without a separate OCR / screen-capture path.
+> **Method note:** terms such as “Golem effect”, “Pygmalion effect”, “mantra”, “ghost-context”, and “psychological programming” are used as **editorial/rhetorical heuristics**. AntiGolem does not claim that wording literally programs a brain or proves subconscious causation.
 
-## Methodology note
+---
 
-The labels **Golem effect**, **Pygmalion effect**, **mantra** and **psychological programming** are implemented as a *heuristic rhetorical/framing model*. The software does **not** claim that a sentence literally programs a neural network, diagnoses a person, or proves subconscious causation. Results are prompts for close reading and editorial review, not clinical findings.
+<a href="https://github.com/chekento/antigolem/releases/latest/download/AntiGolem.apk">
+  <img src="https://img.shields.io/badge/%E2%AC%87%20GET%20ANTIGOLEM%20FOR%20ANDROID-LATEST%20APK-00d8b3?style=for-the-badge&labelColor=07111f" alt="Download latest AntiGolem APK" />
+</a>
 
-## Privacy
+**Android mode:** activate the AntiGolem Accessibility Service explicitly, then use the floating AntiGolem control to capture text exposed by the currently active Android accessibility tree and analyze it locally. Images, canvas-rendered text, video, protected surfaces, and some PDF viewers may require a future OCR/screen-capture path.
 
-Text analysis is local-first. The web app does not transmit pasted text to an AntiGolem backend. The Android overlay processes accessibility text on-device. See [`privacy.html`](./privacy.html) for details.
+The APK now uses the same **shield + speech bubble + tangled-to-clear text** AntiGolem icon as the repository branding.
 
-## GitHub Pages — one-time repository switch
+---
 
-The web app is already stored directly in the repository root and includes `.nojekyll`. If Pages has not yet been enabled for this new repository, open **Settings → Pages**, choose **Deploy from a branch**, select **main** and **/(root)**, then save. GitHub will serve the app at:
+## Six languages automatically
 
-`https://chekento.github.io/antigolem/`
+**Deutsch · English · Français · Español · Italiano · Nederlands**
+
+The GitHub Pages app detects the visitor’s browser languages on first use. If one of the six supported languages is found, it becomes the default. Otherwise AntiGolem starts in **English**. A manually selected language is remembered locally.
+
+---
+
+<p align="center"><img src="assets/marketing/make-your-texts-less-harming.svg" width="100%" alt="Make your texts less harming" /></p>
+
+<p align="center"><img src="assets/marketing/avoid-your-own-threat.svg" width="100%" alt="Avoid your own threat" /></p>
+
+<p align="center"><img src="assets/marketing/its-better-to-write-better.svg" width="100%" alt="It's better to write better" /></p>
+
+---
+
+## Privacy architecture
+
+The rule-based audit is local-first and does not require an AntiGolem backend. When a browser-provided local language model is available, AntiGolem can use it directly. On compatible WebGPU devices, users may optionally load a small open local model; this requires downloading runtime/model files, but the analyzed text is not sent to a paid inference API by AntiGolem.
+
+[Privacy page](./privacy.html) · [Live app](https://chekento.github.io/antigolem/) · [Latest APK](https://github.com/chekento/antigolem/releases/latest/download/AntiGolem.apk)
 
 <details>
-<summary><strong>Repository / developer details</strong></summary>
+<summary><strong>Repository / developer / build details</strong></summary>
 
-### Structure
+### Project structure
 
-- `index.html`, `styles.css`, `app.js`, `report-i18n.js` — GitHub Pages web app
-- `privacy.html` — local-first/privacy and AccessibilityService disclosure
-- `android/` — native Android wrapper + accessibility overlay
-- `.github/workflows/android.yml` — verified APK build and `latest` release publishing
+- `index.html`, `styles.css`, `app.js` — core GitHub Pages app
+- `locale-bootstrap.js` — browser-language detection and English fallback
+- `advanced-stats.js` — extended local heuristic metrics
+- `local-ai.js` — API-free local LLM cross-check layer
+- `report-i18n.js` — localized audit protocol text
+- `assets/brand/` — AntiGolem visual identity
+- `assets/marketing/` — repository/app marketing artwork
+- `android/` — Android wrapper + Accessibility overlay
+- `.github/workflows/android.yml` — automated APK build and latest release
 
-### Android build
+### Android package
+
+`cloud.kosch.antigolem`
+
+### Build locally
 
 ```bash
 gradle -p android :app:assembleDebug
 ```
 
-The public CI build is a **test/debug-signed APK**. For production distribution, configure a private stable signing key in GitHub Secrets before publishing to an app store.
+### CI / release behavior
 
-### Package
+Every relevant Android change triggers the GitHub Actions APK workflow. The current public APK is debug-signed for testing. A production/Play Store build should use a private persistent signing key and an AAB release workflow.
 
-`cloud.kosch.antigolem`
+### GitHub Pages
+
+The site is static and lives in the repository root. Configure GitHub Pages once with:
+
+`Settings → Pages → Deploy from a branch → main → /(root)`
+
+### Local LLM strategy
+
+1. Prefer the browser-provided `LanguageModel` Prompt API when available.
+2. Otherwise, on WebGPU-capable clients, AntiGolem can optionally initialize `Qwen2.5-0.5B-Instruct-q4f16_1-MLC` through WebLLM.
+3. If neither local model path is available, the deterministic full-text audit and extended statistics continue to work normally.
 
 </details>
 
 ---
 
-Built as **AntiGolem** — complete-text semantic forensics with transparent heuristics.
+<p align="center"><b>AntiGolem</b> · local · private · open · human-centric</p>
