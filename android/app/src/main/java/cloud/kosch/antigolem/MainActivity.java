@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 import android.view.Gravity;
+import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -53,6 +54,7 @@ public class MainActivity extends Activity {
         settings.setAllowContentAccess(true);
         settings.setBuiltInZoomControls(false);
         settings.setDisplayZoomControls(false);
+        webView.addJavascriptInterface(new AndroidBridge(), "AntiGolemAndroid");
 
         webView.setWebViewClient(new WebViewClient() {
             @Override public void onPageFinished(WebView view, String url) {
@@ -132,10 +134,22 @@ public class MainActivity extends Activity {
 
     @Override protected void onActivityResult(int requestCode,int resultCode,Intent data){super.onActivityResult(requestCode,resultCode,data);if(requestCode==REQUEST_WEB_FILE){if(webFileCallback!=null){Uri[] result=WebChromeClient.FileChooserParams.parseResult(resultCode,data);webFileCallback.onReceiveValue(result);webFileCallback=null;}}}
 
+    private class AndroidBridge {
+        @JavascriptInterface public void shareText(String text) {
+            if (text == null || text.trim().isEmpty()) return;
+            runOnUiThread(() -> {
+                Intent send = new Intent(Intent.ACTION_SEND);
+                send.setType("text/plain");
+                send.putExtra(Intent.EXTRA_TEXT, text);
+                startActivity(Intent.createChooser(send, "Share AntiGolem reply"));
+            });
+        }
+    }
+
     private void openAccessibilitySettings(){Toast.makeText(this,"Enable AntiGolem Screen Text Analyzer once. The floating toolkit then stays available over launcher and apps.",Toast.LENGTH_LONG).show();startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));}
     private boolean isToolkitEnabled(){String enabled=Settings.Secure.getString(getContentResolver(),Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);if(enabled==null||enabled.trim().isEmpty())return false;String target=new ComponentName(this,AntiGolemAccessibilityService.class).flattenToString();for(String item:enabled.split(":"))if(target.equalsIgnoreCase(item))return true;return false;}
     private void updateToolkitButton(){if(toolkitButton==null)return;boolean active=isToolkitEnabled();toolkitButton.setText(active?"Toolkit active ✓":"Enable floating toolkit");GradientDrawable bg=new GradientDrawable();bg.setCornerRadius(dp(22));bg.setColor(active?Color.rgb(10,84,78):Color.rgb(67,55,166));bg.setStroke(dp(1),active?Color.rgb(33,217,198):Color.rgb(115,96,255));toolkitButton.setBackground(bg);}
     private int dp(int v){return Math.round(v*getResources().getDisplayMetrics().density);}
     @Override public void onBackPressed(){if(webView!=null&&webView.canGoBack())webView.goBack();else super.onBackPressed();}
-    @Override protected void onDestroy(){if(webFileCallback!=null){webFileCallback.onReceiveValue(null);webFileCallback=null;}if(webView!=null){webView.stopLoading();webView.destroy();}super.onDestroy();}
+    @Override protected void onDestroy(){if(webFileCallback!=null){webFileCallback.onReceiveValue(null);webFileCallback=null;}if(webView!=null){webView.removeJavascriptInterface("AntiGolemAndroid");webView.stopLoading();webView.destroy();}super.onDestroy();}
 }
