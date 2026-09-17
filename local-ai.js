@@ -40,10 +40,13 @@
           const appConfig={...webllm.prebuiltAppConfig,cacheBackend:'indexeddb'};
           webEngine=await webllm.CreateMLCEngine('Qwen2.5-0.5B-Instruct-q4f16_1-MLC',{appConfig,initProgressCallback:r=>setStatus(r.text||d().loading)});
         }
-        mode='webllm';return async p=>{const r=await webEngine.chat.completions.create({messages:[{role:'system',content:systemPrompt(ui.lang.value)},{role:'user',content:p}],temperature:.15,max_tokens:900});return r.choices?.[0]?.message?.content||''};
+        mode='webllm';return async p=>{const r=await webEngine.chat.completions.create({messages:[{role:'system',content:systemPrompt(ui.lang.value)},{role:'user',content:p}],temperature:.15,max_tokens:1200});return r.choices?.[0]?.message?.content||''};
       }catch(e){console.warn('WebLLM unavailable',e)}
     }
     return null;
+  }
+  async function askLocal(prompt,setStatus=()=>{}){
+    try{const ask=await ensureModel(setStatus);if(!ask)return null;return await ask(prompt)}catch(e){console.warn('Local AI generation unavailable',e);return null}
   }
   async function run(){
     const text=ui.source.value.trim();if(!text){ui.source.focus();return}
@@ -62,6 +65,7 @@
       out.textContent=result;setStatus(`✓ ${mode==='browser'?d().builtin:d().webllm}`);
     }catch(e){console.error(e);setStatus(`${d().no} (${e?.name||'error'})`);out.textContent=String(e?.message||e)}finally{btn.disabled=false}
   }
+  window.AntiGolemLocalAI={ask:askLocal,getMode:()=>mode,isPotentiallyAvailable:()=>('LanguageModel' in globalThis)||!!navigator.gpu};
   document.addEventListener('DOMContentLoaded',mount,{once:true});
   if(document.readyState!=='loading')mount();
   ui.lang.addEventListener('change',renderLabels);
