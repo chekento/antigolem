@@ -10,8 +10,8 @@ android {
         applicationId 'cloud.kosch.antigolem'
         minSdk 26
         targetSdk 35
-        versionCode 106
-        versionName '1.4.0'
+        versionCode 107
+        versionName '1.5.0'
     }
 
     buildTypes {
@@ -29,13 +29,18 @@ android {
     }
 }
 
+dependencies {
+    // Bundled Latin-script OCR model: no inference API and available immediately after install.
+    implementation 'com.google.mlkit:text-recognition:16.0.1'
+}
+
 final def sharedWebRoot = file("${rootDir}/..")
 final def androidAssets = file("${projectDir}/src/main/assets")
 
 tasks.register('syncWebAssets', Copy) {
     from(sharedWebRoot) {
         include 'index.html', 'about.html', 'methodology.html', 'local-ai.html', 'privacy.html', '404.html'
-        include 'styles.css', 'app.js', 'report-i18n.js', 'locale-bootstrap.js', 'advanced-stats.js', 'local-ai.js', 'editor-tools.js', 'manifest.webmanifest'
+        include 'styles.css', 'app.js', 'report-i18n.js', 'locale-bootstrap.js', 'advanced-stats.js', 'local-ai.js', 'editor-tools.js', 'workbench.js', 'manifest.webmanifest'
         include 'assets/brand/**'
     }
     into(androidAssets)
