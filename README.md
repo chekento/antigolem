@@ -3,10 +3,10 @@
 </p>
 
 <h1 align="center">AntiGolem</h1>
-<p align="center"><b>Semantic Forensics & Language Audit</b><br/>Clearer texts. Stronger agency. Local-first analysis.</p>
+<p align="center"><b>Semantic Forensics · Strict Wording Audit · Local-First Toolkit</b><br/>Analyze harder. Rewrite better. Reply with evidence.</p>
 
 <p align="center">
-  <a href="index.html"><img alt="Open web app source" src="https://img.shields.io/badge/OPEN-WEB%20APP-21d9c6?style=for-the-badge&logo=html5&logoColor=001018"></a>
+  <a href="https://chekento.github.io/antigolem/"><img alt="Open Live App" src="https://img.shields.io/badge/OPEN-LIVE%20APP-21d9c6?style=for-the-badge&logo=githubpages&logoColor=001018"></a>
   <a href="https://github.com/chekento/antigolem/releases/latest/download/AntiGolem.apk"><img alt="Download AntiGolem APK" src="https://img.shields.io/badge/ANDROID-DOWNLOAD%20APK-6f5cff?style=for-the-badge&logo=android&logoColor=white"></a>
 </p>
 
@@ -17,107 +17,108 @@
   <a href="docs/privacy.md">Privacy</a>
 </p>
 
-<p align="center">
-  <img src="assets/marketing/hero.svg" width="100%" alt="AntiGolem app overview" />
-</p>
+<p align="center"><img src="assets/marketing/hero.svg" width="100%" alt="AntiGolem app overview" /></p>
 
-## Analyze the whole text — not a few examples
+## AntiGolem 1.5 — Forensic Workbench
 
-AntiGolem performs a **sentence-by-sentence full-text audit**. The deterministic engine always works without an API key, account, or inference server. It combines structural language analysis with an optional local LLM cross-check.
+AntiGolem performs a **strict sentence-by-sentence full-text audit**. Negative-normalization signals are not cancelled by a positive keyword in the same sentence; D-2+ remains critical, while reference distance, responsibility diffusion, absolutism and modal pressure can independently increase a finding.
 
-| Core audit | Extended statistics | Local AI |
-|---|---|---|
-| BAD / AMBIVALENT / GOOD / NEUTRAL | word count & sentence length | Browser `LanguageModel` / Prompt API when available |
-| D-0 / D-1 / D-2+ binding | lexical diversity | optional Qwen2.5-0.5B via WebLLM/WebGPU |
-| ghost-context heuristics | absolutism & modal pressure | model runs locally after model/runtime download |
-| Golem/Pygmalion framing tags | blame cues & question/exclamation rate | no paid inference API |
-| responsibility diffusion / over-inclusive “we” | critical/high risk count | deterministic engine remains the fallback |
-| target-group resonance + rewrites | constructive share + heuristic clarity index | local AI is a second opinion, not a diagnosis |
+### Four interactive workspaces
 
-> **Method note:** terms such as “Golem effect”, “Pygmalion effect”, “mantra”, “ghost-context”, and “psychological programming” are used as **editorial/rhetorical heuristics**. AntiGolem does not claim that wording literally programs a brain or proves subconscious causation.
+| Workspace | What it does |
+|---|---|
+| **Forensic Heatmap** | Color-codes every detected sentence and opens a clickable *Why this rating?* stack showing negative normalization, D-factor, absolutism, modal pressure, responsibility diffusion and constructive offsets. |
+| **Before / After** | Builds a rewrite proposal, compares grounded issue-rate and clarity before/after, and supports per-sentence **Accept / Keep original**, **Accept all**, local-AI refinement and version history. |
+| **Reply Studio** | Generates replies in **Friendly, Very polite, Professional, Short, Detailed, Question-led, Unfriendly, Dissing and Challenging** styles. Sharp modes criticize the wording/argument rather than degrading the author. Every reply can include real counts and percentages from the current audit. |
+| **Document Lab** | Multi-file import and comparison for TXT, Markdown, HTML, CSV, JSON, XML, RTF, PDF, DOCX and images. PDF.js, Mammoth and Tesseract.js are loaded only when those formats are needed. |
 
----
+**Grounded reply evidence** can include values such as `12/30 sentences (40%) flagged`, BAD/AMBIVALENT shares, critical/high percentage, D-1/D-2+ counts, negative-normalization signals, absolutisms, modal-pressure cues and responsibility-diffusion signals. Percentages are calculated from the analyzed text rather than invented by a reply template.
 
-## 1.4 — Strict analysis, direct rewrite & friendly reply
-
-AntiGolem defaults to a **strict wording audit**. Negative-normalization signals are not cancelled merely because the same sentence also contains a positive keyword. D-2+ remains critical, D-1 is treated more cautiously, and responsibility diffusion, over-inclusive “we”, absolutism and modal pressure can raise the rating even when no explicit failure word is present.
-
-After every analysis the user gets three direct workflow actions:
-
-- **Apply improvements** — rewrites the current source text and immediately re-runs the audit.
-- **Undo** — restores the previous source version.
-- **Create friendly critique** — creates an editable, respectful reply asking the author to improve wording without accusing them of motives or presenting psychological harm as a proven fact.
-
-For **Apply improvements**, AntiGolem first uses the available local on-device model path when compatible. The rewrite prompt preserves facts, names, numbers, links, chronology, viewpoint and intended meaning while improving explicit references, reducing unnecessary absolutism and avoiding failure/powerlessness as a default frame. If no local LLM is available, a deterministic conservative rewrite layer applies safe corrections instead.
-
-Automatic rewrites should still be reviewed before publication, particularly for technical, legal or highly context-sensitive text.
+In the Android APK, Reply Studio can hand its final text directly to Android's **Share** sheet. In browsers AntiGolem uses Web Share when available and falls back to copying.
 
 ---
 
-## Android — Floating Toolkit + Circle Select
+## Android floating toolkit
 
-<a href="https://github.com/chekento/antigolem/releases/latest/download/AntiGolem.apk">
-  <img src="https://img.shields.io/badge/%E2%AC%87%20GET%20ANTIGOLEM%20FOR%20ANDROID-LATEST%20APK-00d8b3?style=for-the-badge&labelColor=07111f" alt="Download latest AntiGolem APK" />
-</a>
+<a href="https://github.com/chekento/antigolem/releases/latest/download/AntiGolem.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20GET%20ANTIGOLEM%20FOR%20ANDROID-LATEST%20APK-00d8b3?style=for-the-badge&labelColor=07111f" alt="Download latest AntiGolem APK" /></a>
 
-After the user explicitly enables the **AntiGolem Screen Text Analyzer** accessibility service, a compact floating AntiGolem icon remains available over the Android launcher and normal apps. Tap it to open the interactive Air-Command/XRecorder-style toolkit.
+After the user explicitly enables **AntiGolem Screen Text Analyzer** in Android Accessibility settings, a small draggable AntiGolem bubble remains available over the launcher and apps.
 
-**Toolkit actions:**
+**Toolkit actions include:**
 
-- **Circle Select & analyze** — draw an oval around content; AntiGolem analyzes accessibility-visible text intersecting the marked region.
-- **Analyze visible text** — audits accessibility-visible text from the whole active app window.
-- **Open text file** — imports a local text document through Android’s system picker.
-- **Write / paste text** — opens the main editor.
-- **Open AntiGolem** — opens the complete analyzer.
-- **Local AI** — opens the local-model layer.
-- **Toolkit settings** — opens Android Accessibility settings.
+- **Circle text select** — draw an oval and analyze only accessibility-visible text intersecting that region.
+- **Circle OCR select** — Android 11+ only; takes an explicit one-shot AccessibilityService screenshot, crops the marked region and performs **bundled on-device ML Kit Latin OCR**. Protected/secure windows remain unavailable.
+- **Analyze visible text** — full active accessibility-visible screen text.
+- **Open document** — jumps straight into Document Lab and Android's multi-file chooser.
+- **Write / paste**, **Open AntiGolem**, **Local AI**, **Settings**.
 
-The floating icon is compact, draggable and can close the menu either by tapping it again or by using the explicit close control. Capture occurs only after an explicit toolkit action; there is no background text harvesting.
+After capture/OCR, a compact **Quick Result** card appears over the current app with **Details · Improve · Reply · Copy**. The quick percentage is explicitly preliminary; **Details** opens the complete strict audit and grounded metrics.
 
-**Circle Select does not take a screenshot.** It uses Android accessibility node bounds. Image-only text, canvas-rendered text, video, protected surfaces and some PDF viewers may still require a future local OCR/screen-capture path.
+The floating menu remains compact, draggable, animated, haptic/ripple-enabled, and closes via its `×` control or another tap on the bubble.
 
 ---
 
-## Six languages automatically
+## Rewrite workflow
+
+AntiGolem can apply improvements directly to the source text. The workbench adds a safer review layer on top:
+
+1. Generate deterministic conservative proposal.
+2. Compare **before vs after** issue rate and clarity.
+3. Accept/reject changes sentence by sentence or accept all.
+4. Optionally refine with the local on-device language-model path.
+5. Restore earlier versions from the local session history.
+
+Automatic rewrites are constrained to preserve factual claims, names, numbers, links, chronology, viewpoint and intended meaning as far as possible, but should still be reviewed before publication.
+
+---
+
+## API-free AI & OCR architecture
+
+The deterministic audit requires **no API key, account or inference server**.
+
+- Browser-provided local `LanguageModel` / Prompt API when available.
+- Optional compact Qwen2.5-0.5B through WebLLM/WebGPU after runtime/model download.
+- Android Circle OCR uses the **bundled** `com.google.mlkit:text-recognition` Latin model, so OCR inference runs on-device and is available after installation.
+- Browser Document Lab image OCR uses Tesseract.js after its runtime/language assets are downloaded.
+
+> **Method note:** Golem/Pygmalion, mantra, ghost-context and “psychological programming” are editorial/rhetorical heuristic labels. AntiGolem does not claim that wording literally programs a brain or proves subconscious causation.
+
+---
+
+## Six languages
 
 **Deutsch · English · Français · Español · Italiano · Nederlands**
 
-The web app detects the visitor’s browser languages on first use. If one of the six supported languages is found, it becomes the default. Otherwise AntiGolem starts in **English**. A manually selected language is remembered locally.
+The web app detects browser language on first use. Unsupported languages fall back to **English**; a manual choice is stored locally.
 
 ---
 
 <p align="center"><img src="assets/marketing/make-your-texts-less-harming.svg" width="100%" alt="Make your texts less harming" /></p>
-
 <p align="center"><img src="assets/marketing/avoid-your-own-threat.svg" width="100%" alt="Avoid your own threat" /></p>
-
 <p align="center"><img src="assets/marketing/its-better-to-write-better.svg" width="100%" alt="It's better to write better" /></p>
 
 ---
 
-## Privacy architecture
+## Privacy
 
-The rule-based audit is local-first and does not require an AntiGolem backend. When a browser-provided local language model is available, AntiGolem can use it directly. On compatible WebGPU devices, users may optionally load a small open local model; this requires downloading runtime/model files, but the analyzed text is not sent to a paid inference API by AntiGolem.
+The rule engine, rewrites, local-model inference and Android OCR are designed local-first. Circle screenshot OCR occurs only after the user explicitly selects that tool and draws a region; the screenshot is cropped locally and released after OCR. AntiGolem does not continuously record the screen. Public runtime/model downloads can still expose ordinary network metadata to their hosts.
 
-[About](docs/about.md) · [Methodology](docs/methodology.md) · [Local AI](docs/local-ai.md) · [Privacy](docs/privacy.md) · [Web app source](index.html) · [Latest APK](https://github.com/chekento/antigolem/releases/latest/download/AntiGolem.apk)
+[About](docs/about.md) · [Methodology](docs/methodology.md) · [Local AI](docs/local-ai.md) · [Privacy](docs/privacy.md) · [Latest APK](https://github.com/chekento/antigolem/releases/latest/download/AntiGolem.apk)
 
 <details>
 <summary><strong>Repository / developer / build details</strong></summary>
 
-### Project structure
+### Core files
 
-- `index.html`, `styles.css`, `app.js` — core web app
-- `docs/about.md`, `docs/methodology.md`, `docs/local-ai.md`, `docs/privacy.md` — GitHub-native subpages; these work directly in the repository without GitHub Pages
-- `about.html`, `methodology.html`, `local-ai.html`, `privacy.html` — static web-app subpages retained for Pages/packaged builds
-- `404.html` — web-route recovery
-- `locale-bootstrap.js` — browser-language detection and English fallback
-- `advanced-stats.js` — extended local heuristic metrics
-- `local-ai.js` — API-free local LLM cross-check + shared local generation layer
-- `editor-tools.js` — strict rating override, apply/undo rewriting and friendly reply workflow
-- `report-i18n.js` — localized audit protocol text
-- `assets/brand/` — AntiGolem visual identity
-- `assets/marketing/` — repository/app marketing artwork
-- `android/` — Android wrapper + floating Accessibility toolkit
-- `.github/workflows/android.yml` — automated APK build and latest release
+- `app.js` — deterministic full-text analyzer
+- `editor-tools.js` — strict-mode rating, direct rewrite/undo and base critique workflow
+- `workbench.js` — heatmap, explainable scoring, diff/version workflow, Reply Studio and Document Lab
+- `share-tools.js` — Android/browser sharing
+- `advanced-stats.js` — extended metrics
+- `local-ai.js` — local LLM cross-check/generation layer
+- `report-i18n.js` / `locale-bootstrap.js` — language/report localization
+- `android/` — WebView wrapper, native floating toolkit, Circle OCR and quick-result overlay
+- `docs/` — GitHub-native documentation pages that work without GitHub Pages
 
 ### Android package
 
@@ -129,22 +130,14 @@ The rule-based audit is local-first and does not require an AntiGolem backend. W
 gradle -p android :app:assembleDebug
 ```
 
-### CI / release behavior
+### GitHub Pages
 
-Every relevant Android change triggers the GitHub Actions APK workflow. The current public APK is debug-signed for testing. A production/Play Store build should use a private persistent signing key and an AAB release workflow.
+The static web application lives in the repository root. GitHub-native documentation links above do **not** depend on Pages. To publish the live web app, configure Pages once with `Settings → Pages → Deploy from a branch → main → /(root)`.
 
-### Why repository subpages no longer depend on GitHub Pages
+### Current distribution
 
-The repository itself currently has only the `main` branch. To avoid navigation failures caused by Pages publication state or routing, the visible Repository Frontpage now links to GitHub-rendered Markdown under `docs/`. The HTML pages remain available for the packaged web/Android app and for a future Pages deployment.
-
-### Local LLM strategy
-
-1. Prefer the browser-provided `LanguageModel` Prompt API when available.
-2. Otherwise, on WebGPU-capable clients, AntiGolem can optionally initialize `Qwen2.5-0.5B-Instruct-q4f16_1-MLC` through WebLLM.
-3. If neither local model path is available, the deterministic full-text audit, strict rating, extended statistics, rewrite fallback and reply generator continue to work normally.
+The public APK is a debug-signed test build. Production / Play Store distribution should use a persistent private signing key and AAB release pipeline.
 
 </details>
 
----
-
-<p align="center"><b>AntiGolem</b> · local · private · open · human-centric</p>
+<p align="center"><b>AntiGolem</b> · local · strict · explainable · open</p>
