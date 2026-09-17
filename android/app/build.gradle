@@ -40,7 +40,7 @@ final def androidAssets = file("${projectDir}/src/main/assets")
 tasks.register('syncWebAssets', Copy) {
     from(sharedWebRoot) {
         include 'index.html', 'about.html', 'methodology.html', 'local-ai.html', 'privacy.html', '404.html'
-        include 'styles.css', 'app.js', 'report-i18n.js', 'locale-bootstrap.js', 'advanced-stats.js', 'local-ai.js', 'editor-tools.js', 'workbench.js', 'share-tools.js', 'manifest.webmanifest'
+        include 'styles.css', 'app.js', 'report-i18n.js', 'locale-bootstrap.js', 'advanced-stats.js', 'local-ai.js', 'editor-tools.js', 'workbench.js', 'share-tools.js', 'export-tools.js', 'manifest.webmanifest'
         include 'assets/brand/**'
     }
     into(androidAssets)
