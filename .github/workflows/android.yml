@@ -18,6 +18,7 @@ on:
       - 'advanced-stats.js'
       - 'local-ai.js'
       - 'editor-tools.js'
+      - 'workbench.js'
       - 'manifest.webmanifest'
       - 'assets/brand/**'
       - '.github/workflows/android.yml'
@@ -47,6 +48,7 @@ jobs:
           node --check advanced-stats.js
           node --check local-ai.js
           node --check editor-tools.js
+          node --check workbench.js
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
@@ -69,10 +71,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          NOTES='AntiGolem 1.4 test build: strict analysis mode, direct Apply Improvements with Undo, optional on-device LLM rewrite plus deterministic fallback, friendly wording-critique reply generator with local-AI refinement, extended statistics, Circle Select region analysis, compact interactive floating toolkit, native text-file import, and API-free local AI. Debug-signed; production distribution should use a private stable signing key.'
+          NOTES='AntiGolem 1.5 test build: forensic sentence heatmap with explainable strict scores, before/after diff with per-sentence accept/reject and version history, expanded Reply Studio including friendly/professional/question-led/unfriendly/dissing/challenging styles with grounded issue counts and percentages, Document Lab with multi-file comparison plus TXT/MD/HTML/CSV/JSON/XML/RTF/PDF/DOCX/image OCR, compact floating quick-result dashboard, Circle accessibility selection and Android 11+ Circle OCR using bundled on-device ML Kit Latin text recognition. API-free analysis and local AI paths remain available. Debug-signed; production distribution should use a private stable signing key.'
           if gh release view latest >/dev/null 2>&1; then
             gh release upload latest AntiGolem.apk --clobber
-            gh release edit latest --target "$GITHUB_SHA" --title 'AntiGolem 1.4 — Strict Rewrite & Reply Toolkit APK' --notes "$NOTES" --latest
+            gh release edit latest --target "$GITHUB_SHA" --title 'AntiGolem 1.5 — Forensic Workbench + Circle OCR APK' --notes "$NOTES" --latest
           else
-            gh release create latest AntiGolem.apk --target "$GITHUB_SHA" --title 'AntiGolem 1.4 — Strict Rewrite & Reply Toolkit APK' --notes "$NOTES" --latest
+            gh release create latest AntiGolem.apk --target "$GITHUB_SHA" --title 'AntiGolem 1.5 — Forensic Workbench + Circle OCR APK' --notes "$NOTES" --latest
           fi
