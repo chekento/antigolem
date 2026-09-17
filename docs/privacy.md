@@ -18,13 +18,13 @@ The floating Android toolkit requires the user to explicitly enable AntiGolem in
 
 Capture does not run continuously in the background.
 
-## Circle text select
+## Freehand Circle Select
 
-The standard Circle Select mode uses accessibility-node screen bounds to decide which exposed text belongs to the marked region. It does **not** take a screenshot.
+Circle Select is a true freehand lasso. AntiGolem records the finger path as a polygon and automatically closes the path when the finger is lifted. Accessibility-visible text is selected by intersecting node screen bounds with that actual polygon. The standard freehand text mode does **not** take a screenshot.
 
-## Circle OCR
+## Freehand Circle OCR
 
-On Android 11+, **Circle OCR** is a separate explicit action. AntiGolem requests a one-shot screenshot through Android's AccessibilityService screenshot capability, crops only the user-selected region and performs Latin-script recognition with the **bundled on-device ML Kit OCR model**. The screenshot is not uploaded by AntiGolem and is released after OCR. Protected/secure Android windows cannot be screenshot-scanned.
+On Android 11+, **Circle OCR** is a separate explicit action. AntiGolem requests a one-shot screenshot through Android's AccessibilityService screenshot capability, crops to the lasso bounds, masks everything outside the hand-drawn polygon locally, and performs Latin-script recognition with the **bundled on-device ML Kit OCR model**. The screenshot is not uploaded by AntiGolem and is released after OCR. Protected/secure Android windows cannot be screenshot-scanned.
 
 ## Quick result overlay
 
