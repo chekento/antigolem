@@ -75,10 +75,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          NOTES='AntiGolem 1.5 test build: forensic sentence heatmap with explainable strict scores, before/after diff with per-sentence accept/reject and version history, expanded Reply Studio including friendly/professional/question-led/unfriendly/dissing/challenging styles with grounded issue counts and percentages plus Android/browser sharing, Document Lab with multi-file comparison plus TXT/MD/HTML/CSV/JSON/XML/RTF/PDF/DOCX/image OCR, TXT/Markdown/PDF export, compact floating quick-result dashboard, Circle accessibility selection and Android 11+ Circle OCR using bundled on-device ML Kit Latin text recognition. API-free analysis and local AI paths remain available. Debug-signed; production distribution should use a private stable signing key.'
+          NOTES='AntiGolem 1.5.1 test build: Circle Select is now a true freehand lasso instead of a stretched oval. The full finger path is stored as a polygon; accessibility text is selected against that real shape, and Android 11+ Circle OCR masks everything outside the hand-drawn polygon before bundled on-device ML Kit recognition. Includes the 1.5 forensic heatmap, explainable scoring, before/after diff and version history, Reply Studio with grounded counts/percentages and multiple tones, Document Lab, TXT/Markdown/PDF export, floating quick-result dashboard, API-free analysis and local AI paths. Debug-signed; production distribution should use a private stable signing key.'
           if gh release view latest >/dev/null 2>&1; then
             gh release upload latest AntiGolem.apk --clobber
-            gh release edit latest --target "$GITHUB_SHA" --title 'AntiGolem 1.5 — Forensic Workbench + Circle OCR APK' --notes "$NOTES" --latest
+            gh release edit latest --target "$GITHUB_SHA" --title 'AntiGolem 1.5.1 — Freehand Circle Select APK' --notes "$NOTES" --latest
           else
-            gh release create latest AntiGolem.apk --target "$GITHUB_SHA" --title 'AntiGolem 1.5 — Forensic Workbench + Circle OCR APK' --notes "$NOTES" --latest
+            gh release create latest AntiGolem.apk --target "$GITHUB_SHA" --title 'AntiGolem 1.5.1 — Freehand Circle Select APK' --notes "$NOTES" --latest
           fi
