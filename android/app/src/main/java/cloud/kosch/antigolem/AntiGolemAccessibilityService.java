@@ -2,6 +2,7 @@ package cloud.kosch.antigolem;
 
 import android.accessibilityservice.AccessibilityService;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,16 +10,20 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 import android.view.Gravity;
+import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.accessibility.AccessibilityWindowInfo;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -48,36 +53,40 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
         super.onServiceConnected();
         showToolkit();
         Toast.makeText(this,
-                "AntiGolem Toolkit is active. Tap the floating icon to open the toolkit.",
+                "AntiGolem Toolkit active. Tap the small floating icon to open it.",
                 Toast.LENGTH_LONG).show();
     }
 
     private void showToolkit() {
         if (overlayRoot != null) return;
-
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
         overlayRoot = new LinearLayout(this);
         overlayRoot.setOrientation(LinearLayout.HORIZONTAL);
         overlayRoot.setGravity(Gravity.CENTER_VERTICAL);
-        overlayRoot.setPadding(dp(2), dp(2), dp(2), dp(2));
+        overlayRoot.setPadding(dp(1), dp(1), dp(1), dp(1));
 
         menuPanel = buildMenuPanel();
         menuPanel.setVisibility(View.GONE);
         menuPanel.setAlpha(0f);
-        overlayRoot.addView(menuPanel, new LinearLayout.LayoutParams(dp(260), LinearLayout.LayoutParams.WRAP_CONTENT));
+        menuPanel.setScaleX(0.94f);
+        menuPanel.setScaleY(0.94f);
+        menuPanel.setTranslationX(dp(16));
+        overlayRoot.addView(menuPanel,
+                new LinearLayout.LayoutParams(dp(232), LinearLayout.LayoutParams.WRAP_CONTENT));
 
         View spacer = new View(this);
-        overlayRoot.addView(spacer, new LinearLayout.LayoutParams(dp(8), dp(1)));
+        overlayRoot.addView(spacer, new LinearLayout.LayoutParams(dp(6), dp(1)));
 
         bubbleButton = new ImageButton(this);
         bubbleButton.setImageResource(R.drawable.ic_antigolem);
         bubbleButton.setScaleType(ImageButton.ScaleType.FIT_CENTER);
-        bubbleButton.setPadding(dp(3), dp(3), dp(3), dp(3));
+        bubbleButton.setPadding(dp(4), dp(4), dp(4), dp(4));
         bubbleButton.setContentDescription("Open AntiGolem Toolkit");
-        bubbleButton.setElevation(dp(14));
-        bubbleButton.setBackground(circleBackground(Color.rgb(7, 17, 31), Color.rgb(33, 217, 198), 28));
-        overlayRoot.addView(bubbleButton, new LinearLayout.LayoutParams(dp(62), dp(62)));
+        bubbleButton.setElevation(dp(12));
+        bubbleButton.setAlpha(0.92f);
+        bubbleButton.setBackground(bubbleBackground());
+        overlayRoot.addView(bubbleButton, new LinearLayout.LayoutParams(dp(46), dp(46)));
 
         overlayParams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -88,8 +97,8 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
                         WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                 PixelFormat.TRANSLUCENT);
         overlayParams.gravity = Gravity.TOP | Gravity.END;
-        overlayParams.x = dp(10);
-        overlayParams.y = dp(180);
+        overlayParams.x = dp(8);
+        overlayParams.y = dp(190);
 
         bubbleButton.setOnTouchListener(this::handleBubbleTouch);
         windowManager.addView(overlayRoot, overlayParams);
@@ -98,34 +107,55 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
     private LinearLayout buildMenuPanel() {
         LinearLayout panel = new LinearLayout(this);
         panel.setOrientation(LinearLayout.VERTICAL);
-        panel.setPadding(dp(12), dp(12), dp(12), dp(12));
+        panel.setPadding(dp(10), dp(9), dp(10), dp(9));
         panel.setElevation(dp(16));
 
         GradientDrawable card = new GradientDrawable();
         card.setShape(GradientDrawable.RECTANGLE);
-        card.setCornerRadius(dp(22));
+        card.setCornerRadius(dp(20));
         card.setColor(Color.rgb(8, 17, 31));
-        card.setStroke(dp(1), Color.rgb(51, 87, 132));
+        card.setStroke(dp(1), Color.rgb(54, 91, 134));
         panel.setBackground(card);
 
+        LinearLayout header = new LinearLayout(this);
+        header.setOrientation(LinearLayout.HORIZONTAL);
+        header.setGravity(Gravity.CENTER_VERTICAL);
+        header.setPadding(dp(5), 0, 0, dp(5));
+
+        LinearLayout titleColumn = new LinearLayout(this);
+        titleColumn.setOrientation(LinearLayout.VERTICAL);
+
         TextView title = new TextView(this);
-        title.setText("AntiGolem Toolkit");
+        title.setText("AntiGolem");
         title.setTextColor(Color.WHITE);
-        title.setTextSize(17f);
+        title.setTextSize(15.5f);
         title.setTypeface(title.getTypeface(), android.graphics.Typeface.BOLD);
-        title.setPadding(dp(8), dp(2), dp(8), 0);
-        panel.addView(title, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+        titleColumn.addView(title);
 
         TextView subtitle = new TextView(this);
-        subtitle.setText("Select · analyze · import · write · local AI");
-        subtitle.setTextColor(Color.rgb(153, 175, 204));
-        subtitle.setTextSize(11.5f);
-        subtitle.setPadding(dp(8), 0, dp(8), dp(8));
-        panel.addView(subtitle, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+        subtitle.setText("Floating language toolkit");
+        subtitle.setTextColor(Color.rgb(132, 158, 190));
+        subtitle.setTextSize(10.5f);
+        titleColumn.addView(subtitle);
+
+        header.addView(titleColumn, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+
+        TextView close = new TextView(this);
+        close.setText("×");
+        close.setTextColor(Color.rgb(220, 234, 250));
+        close.setTextSize(23f);
+        close.setGravity(Gravity.CENTER);
+        close.setContentDescription("Close AntiGolem Toolkit");
+        close.setClickable(true);
+        close.setFocusable(true);
+        close.setBackground(compactRippleBackground(Color.rgb(14, 31, 53), 18));
+        close.setOnClickListener(v -> {
+            v.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);
+            collapseMenu();
+        });
+        header.addView(close, new LinearLayout.LayoutParams(dp(34), dp(34)));
+        panel.addView(header);
 
         panel.addView(menuButton("◯  Circle select & analyze", v -> startCircleSelection()));
         panel.addView(menuButton("◎  Analyze visible text", v -> {
@@ -156,10 +186,11 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
         }));
 
         TextView hint = new TextView(this);
-        hint.setText("Drag the AntiGolem icon to move it. Circle Select analyzes only accessible text inside the marked region.");
-        hint.setTextColor(Color.rgb(110, 132, 160));
-        hint.setTextSize(10.5f);
-        hint.setPadding(dp(8), dp(7), dp(8), dp(2));
+        hint.setText("Tap × or the bubble to close · drag bubble to move");
+        hint.setTextColor(Color.rgb(103, 128, 157));
+        hint.setTextSize(9.5f);
+        hint.setGravity(Gravity.CENTER);
+        hint.setPadding(dp(5), dp(5), dp(5), 0);
         panel.addView(hint);
 
         return panel;
@@ -170,33 +201,45 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
         button.setText(label);
         button.setAllCaps(false);
         button.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
-        button.setTextColor(Color.rgb(230, 241, 255));
-        button.setTextSize(13.5f);
-        button.setPadding(dp(12), 0, dp(10), 0);
-        button.setMinHeight(dp(46));
-        button.setMinimumHeight(dp(46));
-
-        GradientDrawable bg = new GradientDrawable();
-        bg.setShape(GradientDrawable.RECTANGLE);
-        bg.setCornerRadius(dp(13));
-        bg.setColor(Color.rgb(14, 31, 53));
-        bg.setStroke(dp(1), Color.rgb(30, 61, 93));
-        button.setBackground(bg);
+        button.setTextColor(Color.rgb(232, 242, 255));
+        button.setTextSize(12.5f);
+        button.setPadding(dp(11), 0, dp(8), 0);
+        button.setMinHeight(dp(41));
+        button.setMinimumHeight(dp(41));
+        button.setStateListAnimator(null);
+        button.setBackground(compactRippleBackground(Color.rgb(13, 29, 49), 12));
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, dp(46));
-        lp.setMargins(0, dp(3), 0, dp(3));
+                LinearLayout.LayoutParams.MATCH_PARENT, dp(41));
+        lp.setMargins(0, dp(2), 0, dp(2));
         button.setLayoutParams(lp);
-        button.setOnClickListener(listener);
+        button.setOnClickListener(v -> {
+            v.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);
+            v.animate().scaleX(0.97f).scaleY(0.97f).setDuration(55)
+                    .withEndAction(() -> {
+                        v.setScaleX(1f);
+                        v.setScaleY(1f);
+                        listener.onClick(v);
+                    }).start();
+        });
         return button;
     }
 
-    private GradientDrawable circleBackground(int fill, int stroke, int radiusDp) {
+    private RippleDrawable compactRippleBackground(int fill, int radiusDp) {
+        GradientDrawable content = new GradientDrawable();
+        content.setShape(GradientDrawable.RECTANGLE);
+        content.setCornerRadius(dp(radiusDp));
+        content.setColor(fill);
+        content.setStroke(dp(1), Color.rgb(29, 57, 87));
+        return new RippleDrawable(
+                ColorStateList.valueOf(Color.argb(75, 33, 217, 198)), content, null);
+    }
+
+    private GradientDrawable bubbleBackground() {
         GradientDrawable bg = new GradientDrawable();
-        bg.setShape(GradientDrawable.RECTANGLE);
-        bg.setCornerRadius(dp(radiusDp));
-        bg.setColor(fill);
-        bg.setStroke(dp(2), stroke);
+        bg.setShape(GradientDrawable.OVAL);
+        bg.setColor(Color.rgb(7, 17, 31));
+        bg.setStroke(dp(2), Color.rgb(33, 217, 198));
         return bg;
     }
 
@@ -208,6 +251,7 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
                 downX = overlayParams.x;
                 downY = overlayParams.y;
                 moved = false;
+                v.animate().scaleX(0.94f).scaleY(0.94f).setDuration(60).start();
                 return true;
             case MotionEvent.ACTION_MOVE:
                 float dx = event.getRawX() - downRawX;
@@ -220,7 +264,15 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
                 }
                 return true;
             case MotionEvent.ACTION_UP:
-                if (!moved) toggleMenu();
+                v.animate().scaleX(menuOpen ? 1.06f : 1f)
+                        .scaleY(menuOpen ? 1.06f : 1f).setDuration(80).start();
+                if (!moved) {
+                    v.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);
+                    toggleMenu();
+                }
+                return true;
+            case MotionEvent.ACTION_CANCEL:
+                v.animate().scaleX(1f).scaleY(1f).setDuration(80).start();
                 return true;
             default:
                 return false;
@@ -232,20 +284,49 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
     }
 
     private void expandMenu() {
-        if (menuPanel == null) return;
+        if (menuPanel == null || menuOpen) return;
         menuOpen = true;
+        menuPanel.animate().cancel();
         menuPanel.setVisibility(View.VISIBLE);
-        menuPanel.animate().alpha(1f).setDuration(140).start();
-        bubbleButton.setContentDescription("Minimize AntiGolem Toolkit");
+        menuPanel.setAlpha(0f);
+        menuPanel.setScaleX(0.94f);
+        menuPanel.setScaleY(0.94f);
+        menuPanel.setTranslationX(dp(16));
+        menuPanel.animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f)
+                .translationX(0f)
+                .setInterpolator(new OvershootInterpolator(0.85f))
+                .setDuration(185)
+                .start();
+        if (bubbleButton != null) {
+            bubbleButton.animate().alpha(1f).rotation(-8f).scaleX(1.06f).scaleY(1.06f)
+                    .setDuration(150).start();
+            bubbleButton.setContentDescription("Close AntiGolem Toolkit");
+        }
     }
 
     private void collapseMenu() {
         if (menuPanel == null) return;
+        if (!menuOpen && menuPanel.getVisibility() != View.VISIBLE) return;
         menuOpen = false;
-        menuPanel.animate().alpha(0f).setDuration(100).withEndAction(() -> {
-            if (!menuOpen && menuPanel != null) menuPanel.setVisibility(View.GONE);
-        }).start();
-        if (bubbleButton != null) bubbleButton.setContentDescription("Open AntiGolem Toolkit");
+        menuPanel.animate().cancel();
+        menuPanel.animate()
+                .alpha(0f)
+                .scaleX(0.94f)
+                .scaleY(0.94f)
+                .translationX(dp(16))
+                .setInterpolator(new AccelerateInterpolator())
+                .setDuration(115)
+                .withEndAction(() -> {
+                    if (!menuOpen && menuPanel != null) menuPanel.setVisibility(View.GONE);
+                }).start();
+        if (bubbleButton != null) {
+            bubbleButton.animate().alpha(0.92f).rotation(0f).scaleX(1f).scaleY(1f)
+                    .setDuration(120).start();
+            bubbleButton.setContentDescription("Open AntiGolem Toolkit");
+        }
     }
 
     private void startCircleSelection() {
@@ -267,7 +348,7 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
         params.y = 0;
         windowManager.addView(selector, params);
         Toast.makeText(this,
-                "Draw an oval around the text you want AntiGolem to analyze. A tiny tap cancels.",
+                "Draw an oval around the text to analyze. A tiny tap cancels.",
                 Toast.LENGTH_SHORT).show();
     }
 
@@ -310,7 +391,6 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
                     Toast.LENGTH_LONG).show();
             return;
         }
-
         storeCapturedAndAnalyze(captured);
     }
 
@@ -330,7 +410,6 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
                     Toast.LENGTH_LONG).show();
             return;
         }
-
         storeCapturedAndAnalyze(captured);
     }
 
@@ -339,7 +418,7 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
         for (String part : parts) {
             String clean = part == null ? "" : part.trim();
             if (clean.isEmpty()) continue;
-            if (clean.equals("AntiGolem Toolkit") || clean.startsWith("Select · analyze") ||
+            if (clean.equals("AntiGolem") || clean.equals("Floating language toolkit") ||
                     clean.contains("Open AntiGolem Toolkit")) continue;
             if (full.length() > 0) full.append('\n');
             full.append(clean);
@@ -398,9 +477,7 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
         if (node == null || depth > 90 || out.size() > 2500) return;
         Rect bounds = new Rect();
         node.getBoundsInScreen(bounds);
-        if (!bounds.isEmpty() && ellipseIntersectsRect(ellipse, bounds)) {
-            addNodeText(node, out);
-        }
+        if (!bounds.isEmpty() && ellipseIntersectsRect(ellipse, bounds)) addNodeText(node, out);
         for (int i = 0; i < node.getChildCount(); i++) {
             AccessibilityNodeInfo child = node.getChild(i);
             if (child != null) collectTextInRegion(child, out, depth + 1, ellipse);
@@ -429,10 +506,39 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
         return dx * dx + dy * dy <= 1f;
     }
 
+    private int dp(int value) {
+        return Math.round(value * getResources().getDisplayMetrics().density);
+    }
+
+    @Override
+    public void onAccessibilityEvent(AccessibilityEvent event) {
+        // No background harvesting. Capture starts only from an explicit toolkit action.
+    }
+
+    @Override
+    public void onInterrupt() {
+        // No persistent analysis task to interrupt.
+    }
+
+    @Override
+    public void onDestroy() {
+        removeSelectionOverlay();
+        if (windowManager != null && overlayRoot != null) {
+            try {
+                windowManager.removeView(overlayRoot);
+            } catch (Exception ignored) {
+            }
+        }
+        overlayRoot = null;
+        menuPanel = null;
+        bubbleButton = null;
+        super.onDestroy();
+    }
+
     private class CircleSelectionView extends View {
-        private final Paint ovalPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final Paint fillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        private final Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private final Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private final Paint handlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private float startX;
         private float startY;
         private float currentX;
@@ -441,27 +547,25 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
 
         CircleSelectionView() {
             super(AntiGolemAccessibilityService.this);
-            setBackgroundColor(Color.TRANSPARENT);
-            ovalPaint.setStyle(Paint.Style.STROKE);
-            ovalPaint.setStrokeWidth(dp(4));
-            ovalPaint.setColor(Color.rgb(33, 217, 198));
+            setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            fillPaint.setColor(Color.argb(34, 33, 217, 198));
             fillPaint.setStyle(Paint.Style.FILL);
-            fillPaint.setColor(Color.argb(45, 33, 217, 198));
-            textPaint.setColor(Color.WHITE);
-            textPaint.setTextSize(dp(16));
-            textPaint.setFakeBoldText(true);
+            strokePaint.setColor(Color.rgb(33, 217, 198));
+            strokePaint.setStyle(Paint.Style.STROKE);
+            strokePaint.setStrokeWidth(dp(3));
+            handlePaint.setColor(Color.WHITE);
+            handlePaint.setStyle(Paint.Style.FILL);
         }
 
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            canvas.drawColor(Color.argb(70, 0, 0, 0));
-            canvas.drawText("Circle the text to analyze", dp(22), dp(48), textPaint);
-            if (drawing) {
-                RectF region = normalizedRegion();
-                canvas.drawOval(region, fillPaint);
-                canvas.drawOval(region, ovalPaint);
-            }
+            if (!drawing) return;
+            RectF region = normalizedRegion();
+            canvas.drawOval(region, fillPaint);
+            canvas.drawOval(region, strokePaint);
+            canvas.drawCircle(region.left, region.centerY(), dp(4), handlePaint);
+            canvas.drawCircle(region.right, region.centerY(), dp(4), handlePaint);
         }
 
         @Override
@@ -484,7 +588,7 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
                     RectF region = normalizedRegion();
                     drawing = false;
                     invalidate();
-                    if (region.width() < dp(40) || region.height() < dp(40)) {
+                    if (region.width() < dp(28) || region.height() < dp(28)) {
                         cancelCircleSelection();
                     } else {
                         finishCircleSelection(region);
@@ -492,10 +596,11 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
                     return true;
                 case MotionEvent.ACTION_CANCEL:
                     drawing = false;
+                    invalidate();
                     cancelCircleSelection();
                     return true;
                 default:
-                    return true;
+                    return false;
             }
         }
 
@@ -506,34 +611,5 @@ public class AntiGolemAccessibilityService extends AccessibilityService {
                     Math.max(startX, currentX),
                     Math.max(startY, currentY));
         }
-    }
-
-    private int dp(int value) {
-        return Math.round(value * getResources().getDisplayMetrics().density);
-    }
-
-    @Override
-    public void onAccessibilityEvent(AccessibilityEvent event) {
-        // No background harvesting. Analysis/capture starts only from an explicit toolkit action.
-    }
-
-    @Override
-    public void onInterrupt() {
-        // No persistent analysis task to interrupt.
-    }
-
-    @Override
-    public void onDestroy() {
-        removeSelectionOverlay();
-        if (windowManager != null && overlayRoot != null) {
-            try {
-                windowManager.removeView(overlayRoot);
-            } catch (Exception ignored) {
-            }
-        }
-        overlayRoot = null;
-        menuPanel = null;
-        bubbleButton = null;
-        super.onDestroy();
     }
 }
