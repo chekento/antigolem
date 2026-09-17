@@ -19,9 +19,13 @@
 
 <p align="center"><img src="assets/marketing/hero.svg" width="100%" alt="AntiGolem app overview" /></p>
 
-## AntiGolem 1.5 — Forensic Workbench
+## AntiGolem 1.5.1 — Freehand Circle Select
 
-AntiGolem performs a **strict sentence-by-sentence full-text audit**. Negative-normalization signals are not cancelled by a positive keyword in the same sentence; D-2+ remains critical, while reference distance, responsibility diffusion, absolutism and modal pressure can independently increase a finding.
+AntiGolem performs a **strict sentence-by-sentence full-text audit**. Version 1.5.1 changes Android Circle Select from a stretched oval into a **real freehand lasso**.
+
+Draw any contour with your finger — irregular, narrow, diagonal, jagged or rounded. AntiGolem stores the actual finger path as a polygon and automatically closes it when you lift your finger. It does **not** turn the start and end points into an ellipse.
+
+For accessibility-visible text, node bounds are tested against the real polygon. For Android 11+ Circle OCR, AntiGolem captures a one-shot screenshot after the explicit gesture, crops to the polygon bounds and **masks everything outside the hand-drawn shape before ML Kit OCR**.
 
 ### Four interactive workspaces
 
@@ -46,15 +50,15 @@ After the user explicitly enables **AntiGolem Screen Text Analyzer** in Android 
 
 **Toolkit actions include:**
 
-- **Circle text select** — draw an oval and analyze only accessibility-visible text intersecting that region.
-- **Circle OCR select** — Android 11+ only; takes an explicit one-shot AccessibilityService screenshot, crops the marked region and performs **bundled on-device ML Kit Latin OCR**. Protected/secure windows remain unavailable.
+- **Circle Select · freehand text** — paint a freehand loop with your finger. AntiGolem automatically closes the path and analyzes accessibility-visible text intersecting the actual polygon.
+- **Circle OCR · freehand** — Android 11+ only; paints the same arbitrary lasso, takes an explicit one-shot AccessibilityService screenshot and masks all pixels outside the lasso before **bundled on-device ML Kit Latin OCR**. Protected/secure windows remain unavailable.
 - **Analyze visible text** — full active accessibility-visible screen text.
 - **Open document** — jumps straight into Document Lab and Android's multi-file chooser.
 - **Write / paste**, **Open AntiGolem**, **Local AI**, **Settings**.
 
-After capture/OCR, a compact **Quick Result** card appears over the current app with **Details · Improve · Reply · Copy**. The quick percentage is explicitly preliminary; **Details** opens the complete strict audit and grounded metrics.
+A tiny tap or too-small gesture cancels the lasso. The drawn path follows motion-history points for smoother and more faithful finger tracking. On finger-up the open path is automatically closed; no perfect hand-drawn closure is required.
 
-The floating menu remains compact, draggable, animated, haptic/ripple-enabled, and closes via its `×` control or another tap on the bubble.
+After capture/OCR, a compact **Quick Result** card appears over the current app with **Details · Improve · Reply · Copy**. The quick percentage is explicitly preliminary; **Details** opens the complete strict audit and grounded metrics.
 
 ---
 
@@ -101,7 +105,7 @@ The web app detects browser language on first use. Unsupported languages fall ba
 
 ## Privacy
 
-The rule engine, rewrites, local-model inference and Android OCR are designed local-first. Circle screenshot OCR occurs only after the user explicitly selects that tool and draws a region; the screenshot is cropped locally and released after OCR. AntiGolem does not continuously record the screen. Public runtime/model downloads can still expose ordinary network metadata to their hosts.
+The rule engine, rewrites, local-model inference and Android OCR are designed local-first. Freehand Circle OCR occurs only after the user explicitly selects that tool and draws a lasso. The screenshot is processed locally; everything outside the drawn polygon is masked before OCR, and screenshot bitmaps are released after recognition. AntiGolem does not continuously record the screen.
 
 [About](docs/about.md) · [Methodology](docs/methodology.md) · [Local AI](docs/local-ai.md) · [Privacy](docs/privacy.md) · [Latest APK](https://github.com/chekento/antigolem/releases/latest/download/AntiGolem.apk)
 
@@ -114,10 +118,11 @@ The rule engine, rewrites, local-model inference and Android OCR are designed lo
 - `editor-tools.js` — strict-mode rating, direct rewrite/undo and base critique workflow
 - `workbench.js` — heatmap, explainable scoring, diff/version workflow, Reply Studio and Document Lab
 - `share-tools.js` — Android/browser sharing
+- `export-tools.js` — TXT/Markdown/PDF export
 - `advanced-stats.js` — extended metrics
 - `local-ai.js` — local LLM cross-check/generation layer
 - `report-i18n.js` / `locale-bootstrap.js` — language/report localization
-- `android/` — WebView wrapper, native floating toolkit, Circle OCR and quick-result overlay
+- `android/` — WebView wrapper, floating toolkit, true freehand lasso, Circle OCR and quick-result overlay
 - `docs/` — GitHub-native documentation pages that work without GitHub Pages
 
 ### Android package
